@@ -5,7 +5,7 @@ require("connexion.php");
 if ($_SESSION['connect']) {
   $idClient           = $_SESSION['idClient'];
   $fullName           = $_SESSION['fullName'];
-  $adresse           = $_SESSION['adresse'];
+  $adresse            = $_SESSION['adresse'];
   $email              = $_SESSION['email'];
   $zoneGeo            = $_SESSION['zoneGeo'];
 } else if (!isset($_SESSION['connect'])) {
@@ -20,17 +20,17 @@ while ($result = $requete->fetch()) {
 
 if (!empty($_POST['submit'])) {
   if (!empty($_POST['fullName'])) {
-    $fullName          = $_POST['fullName'];
+    $fullName          = htmlspecialchars($_POST['fullName']);
     $requete = $db->prepare('UPDATE clients SET fullName =? WHERE idClient = ?');
     $requete->execute(array($fullName, $idClient));
   }
   if (!empty($_POST['adresse'])) {
-    $adresse        = $_POST['adresse'];
+    $adresse        = htmlspecialchars($_POST['adresse']);
     $requete = $db->prepare('UPDATE clients SET adresse =? WHERE idClient = ?');
     $requete->execute(array($adresse, $idClient));
   }
   if (!empty($_POST['email'])) {
-    $email              = $_POST['email'];
+    $email              = htmlspecialchars($_POST['email']);
     $stmt = $db->prepare("SELECT count(*) as number_email from clients where  email=?");
     $stmt->execute(array($email));
 
@@ -46,13 +46,13 @@ if (!empty($_POST['submit'])) {
   }
 
   if (!empty($_POST['fullName'])) {
-    $fullName          = $_POST['fullName'];
+    $fullName          = htmlspecialchars($_POST['fullName']);
     $requete = $db->prepare('UPDATE clients SET fullName =? WHERE idClient = ?');
     $requete->execute(array($fullName, $idClient));
   }
 
   if (!empty($_POST['zoneGeographique'])) {
-    $zoneGeo  =   $_POST['zoneGeographique'];
+    $zoneGeo  =   htmlspecialchars($_POST['zoneGeographique']);
     $requete = $db->prepare('UPDATE clients SET zoneGeographique = ? WHERE idClient = ?');
     $requete->execute(array($zoneGeo, $idClient));
   }
@@ -61,8 +61,8 @@ if (!empty($_POST['submit'])) {
     $requete = $db->prepare('UPDATE clients SET motDePasse= ? WHERE idClient = ?');
     $requete->execute(array($password, $idClient));
   }
-  $_SESSION['adresse']          = $adresse;
-  $_SESSION['fullName']           = $fullName;
+  $_SESSION['adresse']           = $adresse;
+  $_SESSION['fullName']          = $fullName;
   $_SESSION['idClient']          = $idClient;
   $_SESSION['email']             = $email;
   $_SESSION['zoneGeo']           = $zoneGeo;

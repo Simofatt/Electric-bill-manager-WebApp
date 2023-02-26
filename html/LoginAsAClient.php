@@ -6,8 +6,8 @@ if (isset($_SESSION['connect'])) {
 }
 require("connexion.php");
 if (!empty($_POST['email']) && !empty($_POST['password'])) {
-    $email    =  $_POST['email'];
-    $password =  $_POST['password'];
+    $email    =  htmlspecialchars($_POST['email']);
+    $password =  htmlspecialchars($_POST['password']);
     $error = 1;
     //HASH PASSWORD 
     $password = "aq1" . sha1($password . "1234") . "25";    //aq1 et 1234 25 sont des grain de sels

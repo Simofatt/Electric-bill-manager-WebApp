@@ -2,12 +2,12 @@
 
 require("connexion.php");
 if (!empty($_POST['fullName']) && !empty($_POST['email'])  && !empty($_POST['password']) && !empty($_POST['zoneGeographique'])  && !empty($_POST['passwordConfirm']) && !empty($_POST['adresse'])) {
-  $fullName            = $_POST['fullName'];
-  $email               = $_POST['email'];
-  $adresse             = $_POST['adresse'];
-  $zoneGeo             = $_POST['zoneGeographique'];
-  $password            = $_POST['password'];
-  $passwordConfirm     = $_POST['passwordConfirm'];
+  $fullName            = htmlspecialchars($_POST['fullName']);
+  $email               = htmlspecialchars($_POST['email']);
+  $adresse             = htmlspecialchars($_POST['adresse']);
+  $zoneGeo             = htmlspecialchars($_POST['zoneGeographique']);
+  $password            = htmlspecialchars($_POST['password']);
+  $passwordConfirm     = htmlspecialchars($_POST['passwordConfirm']);
   //CHECK IF PASSWORDS ARE THE SAME
   if ($password != $passwordConfirm) {
     header('Location: joinAsAClient.php?error=1&pass=1');
