@@ -1,0 +1,160 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #171E25;
+  box-sizing: border-box;
+font-family: 'Poppins', sans-serif;
+}
+
+span {
+  color:#b31b1b;
+
+
+}
+
+.logo {
+  float: left;
+  color: #BF9341;
+  margin-left: 50px;
+  margin-top: 20px;
+  font-family: 'Square Peg', cursive;
+  letter-spacing: 1px;
+  font-size:28px;
+  transition: tranform .2s linear ;
+
+}
+.logo:hover {
+transform: scale(1.2);
+}
+
+.title {
+  text-align: center;
+  font-size: 40px;
+  color: #BF9341;
+  position: absolute;
+  top: 50px;
+  left: 470px;
+  transform: translate(-20px , -50px);
+font-family: 'Kanit', sans-serif;
+
+
+
+}
+
+
+.container {
+  width: 500px;
+  height: 400px;
+  background-color: #171E25;
+  position: absolute;
+  top: 30%;
+  left: 30%;
+}
+
+.container form {
+  padding: 10px 80px;
+  box-sizing: border-box;
+}
+
+.container form .txt-field {
+  margin: 25px 0px  ;
+  position: relative;
+}
+
+.txt-field .txt-css {
+  width: 100%;
+  height: 50px;
+  border-color: white;
+  border-width: 2px;
+  outline: none;
+  background-color: #171E25;
+  transition: .5s;
+  color : white;
+  padding: 10px 0 0 5px;
+
+
+
+}
+
+input[value="Log in"] {
+  font-size: 20px;
+  font-family: 'poppins';
+  font-weight: bold;
+}
+
+
+.txt-field label {
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  color: white;
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition: top .4s;
+  opacity: 0.7;
+
+}
+
+.txt-field input:focus~label,
+.txt-field input:valid~label {
+  top: 15px;
+  color: #BF9341;
+  font-weight: lighter;
+  opacity : 100%;
+  font-size:17px;
+
+}
+
+.txt-field input:focus {
+opacity: 100%;
+  border : 2px solid #BF9341;
+}
+
+.login-btn {
+  width: 100%;
+  height: 50px;
+  background-color: #171E25;
+  margin: 10px 0 0 0px;
+  border-radius: 200px;
+  border-color: white;
+  transition: .2s linear;
+  cursor: pointer;
+  color: white;
+  border-width: 0.1px;
+  outline: none;
+}
+
+.login-btn:hover {
+
+  transform: scale(1.1);
+  border: 2px solid #BF9341;
+  color : #BF9341;
+
+}
+
+.P1 {
+  margin: 20px;
+
+}
+
+.P1 p {
+  color: white;
+}
+
+.P1 p  .sign-in  {
+  color: #BF9341;
+  text-decoration: none;
+  font-size : 16px ;
+  font-weight: lighter;
+
+
+
+}
+.P1 p .sign-in:hover {
+
+color : red;
+}
+
+
+
