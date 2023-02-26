@@ -9,8 +9,8 @@ if (empty($_SESSION['connect'])) {
 }
 if (!empty($_POST['consommation']) && !empty($_POST['dateFacture'])) {
 
-  $consommation        = $_POST['consommation'];
-  $dateFacture         = $_POST['dateFacture'];
+  $consommation        = htmlspecialchars($_POST['consommation']);
+  $dateFacture         = htmlspecialchars($_POST['dateFacture']);
 
   //EXTRACTION DE L'ANNEE 
   $year = date("Y", strtotime($dateFacture));
@@ -37,6 +37,7 @@ if (!empty($_POST['consommation']) && !empty($_POST['dateFacture'])) {
     $consommation = $consommation - $difference;
   }
 
+
   //FACTURACTION DU PRIX 
   if ($consommation <= 100) {
     $prixHT   =  $consommation * 0.91;
@@ -47,28 +48,33 @@ if (!empty($_POST['consommation']) && !empty($_POST['dateFacture'])) {
   }
   $prixTTC = $prixHT + ($prixHT * 0.14);
 
+
   //TRAITEMENT IMAGE 
   if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {                                      //l'image existe et a été stockée temporairement sur le serveur
-
+    $error = 1;
     if ($_FILES['image']['size'] <= 3000000) {                                                         //l'image fait moins de 3MO
 
       $informationsImage = pathinfo($_FILES['image']['name']);
       $extensionImage = $informationsImage['extension'];
       $extensionsArray = array('PNG', 'png', 'gif', 'jpg', 'jpeg', 'GIF', 'JPG ', 'JPEG');           //extensions qu'on autorise
-
+      $error = 2;
       if (in_array($extensionImage, $extensionsArray)) {                                            // le type de l'image correspond à ce que l'on attend, on peut alors l'envoyer sur notre serveur
         $address = '../uploads/' . $idClient . time() . rand() . '.' . $extensionImage;
         move_uploaded_file($_FILES['image']['tmp_name'], $address);                                // on renomme notre image avec une clé unique suivie du nom du fichier
         $_SESSION['image'] =  $address;
+        $error = 0;
       }
     }
   }
 
 
-  $requete         = $db->prepare('INSERT INTO  facture(idClient, consommation, prixHT, prixTTC,adresseImg, Année) VALUES (?,?,?,?,?,?)');
-  $requete->execute(array($idClient, $consommation, $prixHT, $prixTTC, $address, $year));
-  header('location: saisieFacture.php?success=1');
-  exit();
+
+  if (isset($error) == 0) {
+    $requete         = $db->prepare('INSERT INTO  facture(idClient, consommation, prixHT, prixTTC,adresseImg, Année) VALUES (?,?,?,?,?,?)');
+    $requete->execute(array($idClient, $consommation, $prixHT, $prixTTC, $address, $year));
+    header('location: saisieFacture.php?success=1');
+    exit();
+  }
 }
 
 
@@ -113,6 +119,19 @@ if (!empty($_POST['consommation']) && !empty($_POST['dateFacture'])) {
       <div>
         <p>Facture bien saisie !</p>
       </div>
+    <?php
+    } ?>
+    <?php
+    if (isset($error) && $error == 1) { ?>
+      <div>
+        <p>La taille de l'image ne doit pas dépasser 3MO !</p> <br>
+      </div>
+    <?php
+    } else if (isset($error) && $error == 2) { ?>
+      <div>
+        <p>L'extension de cette image n'est pas autoriser!</p> <br>
+      </div>
+
     <?php
     }
     ?>
