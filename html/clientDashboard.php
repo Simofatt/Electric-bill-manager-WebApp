@@ -5,13 +5,11 @@ if (!isset($_SESSION['connect'])) {
   exit;
 } else {
   $idClient = $_SESSION['idClient'];
-
-
   require("connexion.php");
-  $requete = $db->prepare('SELECT count(*) as count , c.fullName  FROM facture f INNER JOIN clients as c ON f.idClient = c.idClient WHERE f.idClient = ?');
+  $requete = $db->prepare('SELECT count(*) as count, c.fullName  FROM facture f INNER JOIN clients as c ON f.idClient = c.idClient WHERE f.idClient = ?');
   $requete->execute(array($idClient));
   while ($result = $requete->fetch()) {
-    $fullName      = $result['fullName'];
+    $fullName        = $result['fullName'];
     $nbreFactures    = $result['count'];
   }
 }

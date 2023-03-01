@@ -56,7 +56,7 @@
                 <i class='bx bx-search'></i>
             </div>
             <div class="profile-details">
-                <a href="profile.php"> <span class="admin_name">Mohamed Fatehi</span> </a>
+                <a href="ClientSettings.php"> <span class="admin_name">Mohamed Fatehi</span> </a>
 
             </div>
         </nav>

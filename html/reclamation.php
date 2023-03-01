@@ -1,7 +1,7 @@
 <?php
 session_start();
 require("connexion.php");
-if (empty($_SESSION['connect'])) {
+if (!isset($_SESSION['connect'])) {
   header('location: loginAsAClient.php');
   exit;
 } else {
@@ -42,12 +42,20 @@ if (isset($_POST['submit'])) {
 <div class="compose-box">
   <form method="post" action="reclamation.php">
 
-    <div class="to">
-      <label for="subject">Subject:</label>
-      <input type="text" id="subject" name="subject" required><br><br>
+    <div class="too">
+      <label for="subject">Subject:</label> <br>
+      <select id="subject" name="subject" required>
+        <option class="zone-label"></option>
+        <option class="zone-label">Fuite externe/interne</option>
+        <option value="anfa" name="zoneGeographique">Facture</option>
+        <option value="maarif" name="zoneGeographique">Autre</option>
+
+      </select>
+      <br>
+
     </div>
 
-    <div class="to">
+    <div class="too">
       <label for="message">Message:</label><br>
       <textarea id="message" name="message" rows="10" cols="30" required></textarea><br>
     </div>

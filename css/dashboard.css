@@ -644,3 +644,27 @@ input[type="submit"] {
 input[type="submit"]:hover {
   background-color: black;
 }
+
+/* STYLE FOR THE OPTION SELECT */ 
+.too {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+
+select {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  width: 360px;
+}
+
+option.zone {
+  font-weight: bold;
+}
+
+option.zone:hover {
+  background-color: #f5f5f5;
+}
