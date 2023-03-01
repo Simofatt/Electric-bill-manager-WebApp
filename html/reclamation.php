@@ -7,19 +7,20 @@ if (empty($_SESSION['connect'])) {
 } else {
   $idClient  = $_SESSION['idClient'];
 }
+if (isset($_POST['submit'])) {
+  if (isset($_POST['subject']) && isset($_POST['message'])) {
+    if (!empty($_POST['subject']) && !empty($_POST['message'])) {
 
-if (!empty($_POST['subject']) && !empty($_POST['message'])) {
+      $subject         =  htmlspecialchars($_POST['subject']);
+      $message         =  htmlspecialchars($_POST['message']);
 
-  $subject         = $_POST['subject'];
-  $message         = $_POST['message'];
-
-  $requete         = $db->prepare('INSERT INTO  reclamation(idClient, sujetReclamation, reclamation) VALUES (?,?,?)');
-  $requete->execute(array($idClient, $subject, $message));
-  header('location: reclamation.php?success=1');
-  exit();
+      $requete         = $db->prepare('INSERT INTO  reclamation(idClient, sujetReclamation, reclamation) VALUES (?,?,?)');
+      $requete->execute(array($idClient, $subject, $message));
+      header('location: reclamation.php?success=1');
+      exit();
+    }
+  }
 }
-
-
 ?>
 
 <!DOCTYPE html>

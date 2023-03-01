@@ -1,43 +1,46 @@
 <?php
 
 require("connexion.php");
-if (!empty($_POST['fullName']) && !empty($_POST['email'])  && !empty($_POST['password']) && !empty($_POST['zoneGeographique'])  && !empty($_POST['passwordConfirm']) && !empty($_POST['adresse'])) {
-  $fullName            = htmlspecialchars($_POST['fullName']);
-  $email               = htmlspecialchars($_POST['email']);
-  $adresse             = htmlspecialchars($_POST['adresse']);
-  $zoneGeo             = htmlspecialchars($_POST['zoneGeographique']);
-  $password            = htmlspecialchars($_POST['password']);
-  $passwordConfirm     = htmlspecialchars($_POST['passwordConfirm']);
-  //CHECK IF PASSWORDS ARE THE SAME
-  if ($password != $passwordConfirm) {
-    header('Location: joinAsAClient.php?error=1&pass=1');
-    exit();
-  }
-  //CHECK IF THE EMAIL IS ALREADY USED 
-  $stmt = $db->prepare("SELECT count(*) AS number_email FROM clients WHERE email=?");
-  $stmt->execute(array($email));
-  while ($user = $stmt->fetch()) {
-    if ($user['number_email'] != 0) {
-      header('Location: joinAsAClientphp?error=1&email=1');
+if (isset($_POST['submit'])) {
+  if (isset($_POST['fullName']) && isset($_POST['email'])  && isset($_POST['password']) && isset($_POST['zoneGeographique'])  && isset($_POST['passwordConfirm']) && isset($_POST['adresse'])) {
+    if (!empty($_POST['fullName']) && !empty($_POST['email'])  && !empty($_POST['password']) && !empty($_POST['zoneGeographique'])  && !empty($_POST['passwordConfirm']) && !empty($_POST['adresse'])) {
+      $fullName            = htmlspecialchars($_POST['fullName']);
+      $email               = htmlspecialchars($_POST['email']);
+      $adresse             = htmlspecialchars($_POST['adresse']);
+      $zoneGeo             = htmlspecialchars($_POST['zoneGeographique']);
+      $password            = htmlspecialchars($_POST['password']);
+      $passwordConfirm     = htmlspecialchars($_POST['passwordConfirm']);
+      //CHECK IF PASSWORDS ARE THE SAME
+      if ($password != $passwordConfirm) {
+        header('Location: joinAsAClient.php?error=1&pass=1');
+        exit();
+      }
+      //CHECK IF THE EMAIL IS ALREADY USED 
+      $stmt = $db->prepare("SELECT count(*) AS number_email FROM clients WHERE email=?");
+      $stmt->execute(array($email));
+      while ($user = $stmt->fetch()) {
+        if ($user['number_email'] != 0) {
+          header('Location: joinAsAClientphp?error=1&email=1');
+          exit();
+        }
+      }
+
+      //HASH PSSWD 
+      $password = "aq1" . sha1($password . "1234") . "25";    //aq1 et 1234 25 sont des grain de sels
+
+      //HASH 
+      $secret = sha1($email) . time();
+      $secret = sha1($secret) . time() . time();
+
+      //SENT DATA
+      $stmt = $db->prepare('INSERT INTO clients(fullName, email,adresse,zoneGeographique, motDePasse, secret) VALUES(?,?,?,?,?,?)') or die(print_r($db->errorInfo()));
+      $stmt->execute(array($fullName, $email, $adresse, $zoneGeo, $password, $secret));
+
+      header('location: loginAsAClient.php?success=1');
       exit();
     }
   }
-
-  //HASH PSSWD 
-  $password = "aq1" . sha1($password . "1234") . "25";    //aq1 et 1234 25 sont des grain de sels
-
-  //HASH 
-  $secret = sha1($email) . time();
-  $secret = sha1($secret) . time() . time();
-
-  //SENT DATA
-  $stmt = $db->prepare('INSERT INTO clients(fullName, email,adresse,zoneGeographique, motDePasse, secret) VALUES(?,?,?,?,?,?)') or die(print_r($db->errorInfo()));
-  $stmt->execute(array($fullName, $email, $adresse, $zoneGeo, $password, $secret));
-
-  header('location: loginAsAClient.php?success=1');
-  exit();
 }
-
 
 ?>
 

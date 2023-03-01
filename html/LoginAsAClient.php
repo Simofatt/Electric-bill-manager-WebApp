@@ -5,39 +5,42 @@ if (isset($_SESSION['connect'])) {
     exit;
 }
 require("connexion.php");
-if (!empty($_POST['email']) && !empty($_POST['password'])) {
-    $email    =  htmlspecialchars($_POST['email']);
-    $password =  htmlspecialchars($_POST['password']);
-    $error = 1;
-    //HASH PASSWORD 
-    $password = "aq1" . sha1($password . "1234") . "25";    //aq1 et 1234 25 sont des grain de sels
+if (isset($_POST['submit'])) {
+    if (isset($_POST['email']) && isset($_POST['password'])) {
+        if (!empty($_POST['email']) && !empty($_POST['password'])) {
+            $email    =  htmlspecialchars($_POST['email']);
+            $password =  htmlspecialchars($_POST['password']);
+            $error = 1;
+            //HASH PASSWORD 
+            $password = "aq1" . sha1($password . "1234") . "25";    //aq1 et 1234 25 sont des grain de sels
 
-    $requete = $db->prepare("SELECT*FROM clients WHERE email=?");
-    $requete->execute(array($email));
-    while ($user = $requete->fetch()) {
-        if ($password == $user['motDePasse']) {
-            $error = 0;
+            $requete = $db->prepare("SELECT*FROM clients WHERE email=?");
+            $requete->execute(array($email));
+            while ($user = $requete->fetch()) {
+                if ($password == $user['motDePasse']) {
+                    $error = 0;
 
-            $_SESSION['fullName'] = $user['fullName']; // c'est pour ca quand a fetch tout
-            $_SESSION['idClient'] = $user['idClient'];
-            $_SESSION['email']    = $user['email'];
-            $_SESSION['adresse']  = $user['adresse'];
-            $_SESSION['zoneGeo']  = $user['zoneGeographique'];
-            $_SESSION['connect']  = 1;
+                    $_SESSION['fullName'] = $user['fullName']; // c'est pour ca quand a fetch tout
+                    $_SESSION['idClient'] = $user['idClient'];
+                    $_SESSION['email']    = $user['email'];
+                    $_SESSION['adresse']  = $user['adresse'];
+                    $_SESSION['zoneGeo']  = $user['zoneGeographique'];
+                    $_SESSION['connect']  = 1;
 
-            if (isset($_POST['connect'])) {
-                setcookie('connect', $user['secret'], time() + 365 * 24 * 3600, '/', null, false, true);
+                    if (isset($_POST['connect'])) {
+                        setcookie('connect', $user['secret'], time() + 365 * 24 * 3600, '/', null, false, true);
+                    }
+                    header('location: clientDashboard.php?succes=1');
+                    exit();
+                }
             }
-            header('location: clientDashboard.php?succes=1');
-            exit();
+            if ($error == 1) {
+                header('location: loginAsAClient.php?error=1');
+                exit();
+            }
         }
     }
-    if ($error == 1) {
-        header('location: loginAsAClient.php?error=1');
-        exit();
-    }
 }
-
 ?>
 
 <!DOCTYPE html>
