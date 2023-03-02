@@ -14,7 +14,7 @@ if (isset($_POST['submit'])) {
             //HASH PASSWORD 
             $password = "aq1" . sha1($password . "1234") . "25";    //aq1 et 1234 25 sont des grain de sels
 
-            $requete = $db->prepare("SELECT*FROM clients WHERE email=?");
+            $requete = $db->prepare("SELECT * FROM clients WHERE email=?");
             $requete->execute(array($email));
             while ($user = $requete->fetch()) {
                 if ($password == $user['motDePasse']) {
@@ -92,10 +92,10 @@ if (isset($_POST['submit'])) {
             </div>
 
             <div>
-                <input class="login-btn" type="submit" value="Log in">
+                <input class="login-btn" type="submit" value="Log in" name="submit">
             </div>
 
-            <div class="P1">
+            <div class=" P1">
                 <p>Don't you have an account? <a href="JoinAsAClient.php" class="sign-in"> Sign in </a> </p>
             </div>
 

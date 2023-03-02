@@ -88,7 +88,7 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
             </div>
 
             <div>
-                <input class="login-btn" type="submit" value="Log in">
+                <input class="login-btn" type="submit" value="Log in" name="submit">
             </div>
 
 
