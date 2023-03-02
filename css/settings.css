@@ -175,24 +175,39 @@ nav .profile-details i{
   color: #333;
 }
 
+
+
 /*section */
 .home-section .home-content{
   position: relative;
   padding-top: 180px;
 }
 
+.container1 form {
+  width: 500px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px;
+  position :fixed ; 
+  top : -5px;
+  left :  550px;
+  z-index: 2;
+  
 
-.form {
-    width: 500px;
-    
+}
+
+.container2 form {
+    width: 520px;
     margin: 0 auto;
     text-align: center;
     padding: 20px;
     position :fixed ; 
-    top : 70px;
-    left :  500px;
+    top : 150px;
+    left :  540px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
   }
-
+  
   .form .txt-field {
     width: 100%;
     margin-bottom: 20px;
@@ -202,9 +217,6 @@ nav .profile-details i{
     display: block ;
     font-size: 16px;
     float : left ; 
-
-    
-
   }
   .form input {
 width: 260px;
@@ -228,7 +240,7 @@ width: 260px;
 
   .form input[type="button"] {
     width: 100%;
-    background-color: #4CAF50;
+    background-color: #333;
     color: white;
     padding: 14px 20px;
     margin: 0px 0;
@@ -238,5 +250,10 @@ width: 260px;
   }
 
   .form input[type="button"]:hover {
-    background-color: #45a049;
+    background-color: #333;
+  }
+
+ 
+  .sidebar-button nav { 
+    z-index: auto;
   }

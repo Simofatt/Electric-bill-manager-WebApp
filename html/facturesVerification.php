@@ -1,14 +1,19 @@
-<?php /*
-if (empty($_SESSION['connect'])) {
-  header('location: login_as_an_influencer.php');
-  exit;
-}
+<?php
+session_start();
 require("connexion.php");
-$requete = $db->prepare('SELECT count(*) as nbre_brands FROM brands ');
-$requete->execute();
-while ($result = $requete->fetch()) {
-  $nbre_brands = $result['nbre_brands'];
-}*/
+
+if (!isset($_SESSION['connect'])) {
+  header('location: loginAsAnAdmin.php');
+  exit;
+} else {
+  if (isset($_POST['submit'])) {
+    if (isset($_POST['idClient'])) {
+      $idClient =  htmlspecialchars($_POST['idClient']);
+      header('location: facturesVerification.php?idClient=' . $idClient . '');
+    }
+  }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -43,63 +48,85 @@ while ($result = $requete->fetch()) {
   </div>
   <div class="sales-boxes">
 
-    <div class="recent-sales box">
-      <div class="title">Factures de .....</div>
-      <div class="sales-details">
+    <?php
+    if (isset($_GET['idClient'])) {
+      $idClient =  $_GET['idClient'];
+      $requete  = $db->prepare('SELECT fullName,zoneGeographique FROM clients where idClient = ?');
+      $requete->execute(array($idClient));
+      while ($result = $requete->fetch()) {
+        $fullName  = $result['fullName'];
+        $zoneGeo   = $result['zoneGeographique'];
+      }
+    ?>
 
-        <ul class="details">
-          <li class="topic">Mois</li>
-          <?php /*for ($i = 1; $i <= $nbre_brands; $i++) {
-            $requete = $db->prepare('SELECT name_brand FROM brands where id =?');
-            $requete->execute(array($i));
+      <div class="recent-sales box">
+        <div class="title">Factures de <?php echo $fullName; ?></div>
+        <div class="sales-details">
+
+
+          <ul class="details">
+            <li class="topic">Date Factures </li>
+            <?php
+            $requete = $db->prepare('SELECT dateFacture FROM facture where idClient =?');
+            $requete->execute(array($idClient));
             while ($result = $requete->fetch()) {
-              $name_brand = $result['name_brand'];
+              $dateFacture   =   $result['dateFacture'];
 
-          ?>
-              <li> <?php echo  $name_brand; ?> </li>
-          <?php
+            ?>
+              <li> <?php echo  $dateFacture; ?> </li>
+            <?php
             }
-          }*/
-          ?>
-        </ul>
 
-        <ul class="details">
-          <li class="topic">Consomations</li>
-          <?php /*for ($i = 1; $i <= $nbre_brands; $i++) {
-            $requete = $db->prepare('SELECT instagram_account FROM brands where id =?');
-            $requete->execute(array($i));
+            ?>
+          </ul>
+
+          <ul class="details">
+            <li class="topic">Consomations</li>
+            <?php
+            $requete = $db->prepare('SELECT consommation FROM facture where idClient =?');
+            $requete->execute(array($idClient));
             while ($result = $requete->fetch()) {
+              $consommation  = $result['consommation'];
 
-              $instagram_account = $result['instagram_account'];
-          ?>
-              <li><?php echo $instagram_account; ?></li>
-          <?php
+            ?>
+              <li><?php echo $consommation; ?></li>
+            <?php
             }
-          }*/
-          ?>
-        </ul>
 
-        <ul class="details">
-          <li class="topic">Justificatifs</li>
-          <?php /*
+            ?>
+          </ul>
 
-          $requete = $db->prepare('SELECT id FROM brands');
-          $requete->execute();
+          <ul class="details">
+            <li class="topic">Etat</li>
+            <?php
+            $requete = $db->prepare('SELECT Etat FROM facture WHERE idClient = ? ');
+            $requete->execute(array($idClient));
+            while ($result = $requete->fetch()) {
+              $etatFacture = $result['Etat'];
+            ?>
+              <li><?php echo $etatFacture; ?></li>
+            <?php
+            }
 
+            ?>
+          </ul>
+
+          <ul class="details">
+            <li class="topic">Justificatifs</li>
+          <?php
+          $requete = $db->prepare('SELECT adresseImg FROM facture WHERE idClient = ? ');
+          $requete->execute(array($idClient));
           while ($result = $requete->fetch()) {
-            $id_brand    = $result['id'];
-
-            echo  '<li> <a href="msg.php?id_brand=' . $id_brand . '"> Sent a message </a> </li>';
+            $adresseImg   = $result['adresseImg'];
+            echo  '<li> <a href="' . $adresseImg . '"> Voir justificatif </a> </li>';
           }
-*/
+        } else {
+          //ALERT
+        }
           ?>
-
-
-        </ul>
+          </ul>
+        </div>
       </div>
-
-    </div>
-
   </div>
 </div>
 </section>

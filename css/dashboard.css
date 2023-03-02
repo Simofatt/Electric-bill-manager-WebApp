@@ -79,6 +79,7 @@
   width: calc(100% - 240px);
   left: 240px;
   transition: all 0.5s ease;
+  z-index: auto;
 }
 .sidebar.active ~ .home-section{
   width: calc(100% - 60px);
@@ -94,10 +95,11 @@
   position: fixed;
   width: calc(100% - 240px);
   left: 240px;
-  z-index: 100;
+  z-index: auto;
   padding: 0 20px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   transition: all 0.5s ease;
+
 }
 .sidebar.active ~ .home-section nav{
   left: 60px;
@@ -610,16 +612,7 @@ input[type="submit"]:hover {
 /*css pour create un Deal */ 
 
 
-form {
-  width: 400px;
-  margin: 0 auto;
-  position: relative;
-  top : 150px;
-  text-align: center;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-}
+
 
 input[type="text"], input[type="date"] {
   width: 100%;
@@ -667,4 +660,7 @@ option.zone {
 
 option.zone:hover {
   background-color: #f5f5f5;
+}
+.sidebar-button nav { 
+  z-index: auto;
 }

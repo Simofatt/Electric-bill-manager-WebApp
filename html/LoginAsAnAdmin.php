@@ -1,42 +1,43 @@
 <?php
-/*
 session_start();
 if (isset($_SESSION['connect'])) {
-    header('location: dashboard.php?succes=1');
+    header('location: AdminDashboard.php?succes=1');
     exit;
-}
-require("connexion.php");
-if (!empty($_POST['email']) && !empty($_POST['password'])) {
-    $email    =  $_POST['email'];
-    $password =  $_POST['password'];
-    $error = 1;
-    //HASH PASSWORD 
-    $password = "aq1" . sha1($password . "1234") . "25";    //aq1 et 1234 25 sont des grain de sels
+} else {
+    require("connexion.php");
+    if (isset($_POST['submit'])) {
+        if (isset($_POST['pseudo']) &&  isset($_POST['password'])) {
+            if (!empty($_POST['pseudo']) && !empty($_POST['password'])) {
+                $pseudo   =  $_POST['pseudo'];
+                $password =  $_POST['password'];
+                $error = 1;
+                //HASH PASSWORD 
+                $password = "aq1" . sha1($password . "1234") . "25";
 
-    $requete = $db->prepare("SELECT *  FROM brands WHERE email=? ");
-    $requete->execute(array($email));
-    while ($user = $requete->fetch()) {
-        if ($password == $user['password']) {
-            $error = 0;
-            $_SESSION['connect'] = 1;
-            $_SESSION['name_brand']  = $user['name_brand']; // c'est pour ca quand a fetch tout
-            $_SESSION['id_brand'] = $user['id'];
-            $_SESSION['email'] = $user['email'];
-            $_SESSION['instagram_account'] = $user['instagram_account'];
-
-            if (isset($_POST['connect'])) {
-                setcookie('connect', $user['secret'], time() + 365 * 24 * 3600, '/', null, false, true);
+                $requete = $db->prepare("SELECT *  FROM admins WHERE pseudo=?");
+                $requete->execute(array($pseudo));
+                $user = $requete->fetch();
+                if ($user) {
+                    if ($password == $user['motDePasse']) {
+                        $error = 0;
+                        $_SESSION['connect'] = 1;
+                        $_SESSION['pseudo']  = $user['pseudo']; // c'est pour ca quand a fetch tout
+                        $_SESSION['idAdmin'] = $user['idAdmin'];
+                        if (isset($_POST['connect'])) {
+                            setcookie('connect', $user['secret'], time() + 365 * 24 * 3600, '/', null, false, true);
+                        }
+                        header('location: AdminDashboard.php?succes=1');
+                        exit();
+                    }
+                }
+                if ($error == 1) {
+                    header('location: loginAsAnAdmin.php?error=1');
+                    exit();
+                }
             }
-            header('location: dashboard.php?succes=1');
-            exit();
         }
     }
-    if ($error == 1) {
-        header('location: login_as_a_brand.php?error=1');
-        exit();
-    }
 }
-*/
 ?>
 
 <!DOCTYPE html>
@@ -75,8 +76,8 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
             }*/
             ?>
             <div class="txt-field">
-                <input type="email" name="email" class="txt-css" required>
-                <label>Email</label>
+                <input type="text" name="pseudo" class="txt-css" required>
+                <label>Pseudo</label>
             </div>
 
             <div class="txt-field">
@@ -88,7 +89,7 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
             </div>
 
             <div>
-                <input class="login-btn" type="submit" value="Log in">
+                <input class="login-btn" type="submit" value="Log in" name="submit">
             </div>
 
 

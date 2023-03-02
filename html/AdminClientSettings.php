@@ -1,86 +1,86 @@
-<?php /*
+<?php
 session_start();
 require("connexion.php");
 
-if ($_SESSION['connect']) {
-  $id_influencer      = $_SESSION['id_influencer'];
-
-  $stmt = $db->prepare("SELECT * FROM influencer WHERE id=?");
-  $stmt->execute(array($id_influencer));
-  while ($user = $stmt->fetch()) {
-    $_SESSION['full_name']         = $user['full_name']; // c'est pour ca quand a fetch tout
-    $_SESSION['id_influencer']     = $user['id'];
-    $_SESSION['email']             = $user['email'];
-    $_SESSION['phone_number']      = $user['phone_number'];
-    $_SESSION['instagram_account'] = $user['instagram_account'];
+if (isset($_POST['search'])) {
+  if (isset($_POST['idClient'])) {
+    $_SESSION['idClient'] =  htmlspecialchars($_POST['idClient']);
   }
-  $full_name          = $_SESSION['full_name'];
-  $email              = $_SESSION['email'];
-  $phone_number       = $_SESSION['phone_number'];
-  $instagram_account  = $_SESSION['instagram_account'];
-} else if (!isset($_SESSION['connect'])) {
-  header('location: login_as_an_influencer.php');
-}
-$requete  = $db->prepare('SELECT password FROM influencer where id = ?');
-$requete->execute(array($id_influencer));
-while ($result = $requete->fetch()) {
-  $password  = $result['password'];
 }
 
-if (!empty($_POST['submit'])) {
-  if (!empty($_POST['full_name'])) {
-    $full_name          = $_POST['full_name'];
-    $requete = $db->prepare('UPDATE influencer SET full_name = ? WHERE id = ?');
-    $requete->execute(array($full_name, $id_influencer));
-  }
-  if (!empty($_POST['email'])) {
-    $email              = $_POST['email'];
-    $stmt = $db->prepare("SELECT count(*) as number_email from influencer where  email=?  ");
-    $stmt->execute(array($email));
 
-    while ($result = $stmt->fetch()) {
-      if ($result['number_email'] != 0) {
-        header('Location: login_as_an_influencer.php?error=1&email=1');
-        exit();
-      } else {
-        $requete = $db->prepare('UPDATE influencer SET email = ? WHERE id = ?');
-        $requete->execute(array($email, $id_influencer));
+if (isset($_SESSION['idClient'])) {
+  $idClient =  $_SESSION['idClient'];
+  $requete  = $db->prepare('SELECT * FROM clients where idClient = ?');
+  $requete->execute(array($idClient));
+  while ($result = $requete->fetch()) {
+
+    $password           = $result['motDePasse'];
+    $fullName           = $result['fullName'];
+    $adresse            = $result['adresse'];
+    $email              = $result['email'];
+    $zoneGeo            = $result['zoneGeographique'];
+  }
+}
+if (isset($_POST['submit'])) {
+  $_SESSION['formSubmitted'] = 1;
+}
+if (isset($_POST['submit'])) {
+  if (isset($_POST['fullName'])) {
+    if (!empty($_POST['fullName'])) {
+      $fullName          = htmlspecialchars($_POST['fullName']);
+      $requete = $db->prepare('UPDATE clients SET fullName =? WHERE idClient = ?');
+      $requete->execute(array($fullName, $idClient));
+    }
+  }
+  if (isset($_POST['adresse'])) {
+    if (!empty($_POST['adresse'])) {
+      $adresse        = htmlspecialchars($_POST['adresse']);
+      $requete = $db->prepare('UPDATE clients SET adresse =? WHERE idClient = ?');
+      $requete->execute(array($adresse, $idClient));
+    }
+  }
+  if (isset($_POST['email'])) {
+    if (!empty($_POST['email'])) {
+      $email              = htmlspecialchars($_POST['email']);
+      $stmt = $db->prepare("SELECT count(*) as number_email from clients where  email=?");
+      $stmt->execute(array($email));
+
+      while ($result = $stmt->fetch()) {
+        if ($result['number_email'] != 0) {
+          header('Location: ClientSettings.php?error=1');
+          exit();
+        } else {
+          $requete = $db->prepare('UPDATE clients SET email = ? WHERE idClient = ?');
+          $requete->execute(array($email, $idClient));
+        }
       }
     }
   }
-  if (!empty($_POST['phone_number'])) {
-    $phone_number       = $_POST['phone_number'];
-    $requete = $db->prepare('UPDATE influencer SET phone_number = ? WHERE id = ?');
-    $requete->execute(array($phone_number, $id_influencer));
-  }
-  if (!empty($_POST['instagram_account'])) {
-    $instagram_account    =   $_POST['instagram_account'];
-    $requete = $db->prepare('UPDATE influencer SET instagram_account = ? WHERE id = ?');
-    $requete->execute(array($instagram_account, $id_influencer));
-  }
-  if (!empty($_POST['password'])) {
-    $password           = "aq1" . sha1($password . "1234") . "25";
-    $requete = $db->prepare('UPDATE influencer SET password = ? WHERE id = ?');
-    $requete->execute(array($password, $id_influencer));
-  }
-
-  $stmt = $db->prepare("SELECT * FROM influencer WHERE email=?");
-  $stmt->execute(array($email));
-  while ($user = $stmt->fetch()) {
-    if ($password == $user['password']) {
-
-      $_SESSION['full_name']         = $user['full_name']; // c'est pour ca quand a fetch tout
-      $_SESSION['id_influencer']     = $user['id'];
-      $_SESSION['email']             = $user['email'];
-      $_SESSION['phone_number']      = $user['phone_number'];
-      $_SESSION['instagram_account'] = $user['instagram_account'];
+  if (isset($_POST['fullName'])) {
+    if (!empty($_POST['fullName'])) {
+      $fullName          = htmlspecialchars($_POST['fullName']);
+      $requete = $db->prepare('UPDATE clients SET fullName =? WHERE idClient = ?');
+      $requete->execute(array($fullName, $idClient));
     }
   }
-
-  header('location: profileSettings.php?success=1');
-  exit();
+  if (isset($_POST['zoneGeographique'])) {
+    if (!empty($_POST['zoneGeographique'])) {
+      $zoneGeo  =   htmlspecialchars($_POST['zoneGeographique']);
+      $requete = $db->prepare('UPDATE clients SET zoneGeographique = ? WHERE idClient = ?');
+      $requete->execute(array($zoneGeo, $idClient));
+    }
+  }
+  if (isset($_POST['password'])) {
+    if (!empty($_POST['password'])) {
+      $password           = "aq1" . sha1($password . "1234") . "25";
+      $requete = $db->prepare('UPDATE clients SET motDePasse= ? WHERE idClient = ?');
+      $requete->execute(array($password, $idClient));
+    }
+  }
 }
-*/
+
+
 
 ?>
 
@@ -96,46 +96,77 @@ if (!empty($_POST['submit'])) {
   <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
   <title>Settings</title>
 </head>
+
 <?php require("navBarAdmin.php"); ?>
+<div class="container1">
+  <form class="form" method="post" action="AdminClientSettings.php">
+    <div class="">
+      <input class="txt-css" type="text" id="firstName" name="idClient" placeholder="ID CLIENT">
+    </div>
+    <div>
+      <input type="submit" id="search" value="Search" name="search">
+    </div>
+  </form>
 </div>
-</section>
+
+<?php // if (isset($_SESSION['formSubmitted'])) { 
+?>
+<div class="container2" id="result" style="">
+  <form class=" form" method="post" action="AdminClientSettings.php">
+    <div class="txt-field">
+      <label for="firstName">Full name</label>
+      <input class="txt-css" type="text" id="firstName" name="fullName" placeholder="<?php echo  $fullName; ?>">
+    </div>
+    <div class="txt-field">
+      <label for="email">Email</label>
+      <input class="txt-css" type="email" id="email" name="email" placeholder=" <?php echo $email; ?>">
+    </div>
+    <div class="txt-field">
+      <label for="">Adresse</label>
+      <input class="txt-css" type="text" name="adresse" placeholder="<?php echo $adresse; ?>">
+    </div>
+    <div class=" txt-field">
+      <label for="password">Zone geographique</label>
+      <input class="txt-css" type="text" id="password" name="password" placeholder="<?php echo $zoneGeo; ?>">
+    </div>
+    <div class="txt-field">
+      <label for="password">Modify Password</label>
+      <input class="txt-css" type="password" id="password" name="password" placeholder="**********">
+    </div>
+    <div>
+      <input type="submit" name="submit" value="Enregistrer">
+    </div>
+  </form>
+</div>
+<?php
+//}
+?>
+
+<script>
+  // Vérifie si l'utilisateur a effectué une recherche sur la page actuelle
+  if (localStorage.getItem('searched') !== 'true') {
+    // Masque la deuxième partie du contenu
+    document.getElementById('container2').style.display = 'none';
+  }
+
+  // Écoute les événements de soumission du formulaire
+  document.addEventListener('submit', function(event) {
+    // Vérifie si le formulaire a été soumis depuis la page actuelle et contient un champ de recherche
+    if (event.target.closest('') && event.target.elements.search) {
+      // Stocke la valeur de recherche dans le localStorage
+      localStorage.setItem('searched', 'true');
+    }
+  });
+</script>
 
 
+<?php
 
-<form class="form" method="post" action="AdminClientSettings.php">
-  <div class="txt-field">
-    <label for="firstName">Full name</label>
-    <input class="txt-css" type="text" id="firstName" name="full_name" placeholder="<?php echo  $full_name; ?>">
-  </div>
-  <div class="txt-field">
-    <label for="email">Email</label>
-    <input class="txt-css" type="email" id="email" name="email" placeholder=" <?php echo $email; ?>">
-  </div>
-  <div class="txt-field">
-    <label for="">Adresse</label>
-    <input class="txt-css" type="text" name="adresse" placeholder="<?php echo $adresse; ?>"">
-      
-      </div>
-
-
-  <div class=" txt-field">
-    <label for="password">Zone geographique</label>
-    <input class="txt-css" type="text" id="password" name="password" placeholder="">
-  </div>
-
-  <div class="txt-field">
-    <label for="password">Modify Password</label>
-    <input class="txt-css" type="password" id="password" name="password" placeholder="**********">
-  </div>
-
-
-  <div>
-    <input type="submit" name="submit" value="Enregistrer">
-  </div>
-</form>
+?>
 
 </body>
+<?php
 
-
+?>
 
 </html>
