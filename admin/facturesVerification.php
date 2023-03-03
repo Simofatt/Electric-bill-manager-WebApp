@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("connexion.php");
+require("../commun/connexion.php");
 
 if (!isset($_SESSION['connect'])) {
   header('location: loginAsAnAdmin.php');

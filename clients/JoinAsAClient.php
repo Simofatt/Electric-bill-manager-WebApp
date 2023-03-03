@@ -1,6 +1,6 @@
 <?php
 
-require("connexion.php");
+require("../commun/connexion.php");
 if (isset($_POST['submit'])) {
   if (isset($_POST['fullName']) && isset($_POST['email'])  && isset($_POST['password']) && isset($_POST['zoneGeographique'])  && isset($_POST['passwordConfirm']) && isset($_POST['adresse'])) {
     if (!empty($_POST['fullName']) && !empty($_POST['email'])  && !empty($_POST['password']) && !empty($_POST['zoneGeographique'])  && !empty($_POST['passwordConfirm']) && !empty($_POST['adresse'])) {

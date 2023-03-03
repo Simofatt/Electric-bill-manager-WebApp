@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("connexion.php");
+require("../commun/connexion.php");
 if (empty($_SESSION['connect'])) {
   header('location: loginAsAClient.php');
   exit;
@@ -94,7 +94,7 @@ if (isset($_POST['submit'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Saisie d'une facture </title>
   <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="../css/dashboard.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../css/sasieFacture.css?v=<?php echo time(); ?>">
 </head>
 
 <?php require("navBarClient.php"); ?>

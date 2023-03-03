@@ -6,5 +6,5 @@ setcookie('connect', '', time() - 3444, '/', null, false, true);       // time- 
 if (isset($_SESSION['connect'])) {
     $_SESSION['connect'] = "";
 }
-header('location: acceuil.php');
+header('location: index.php');
 exit;

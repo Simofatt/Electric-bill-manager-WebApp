@@ -13,7 +13,7 @@
                 </a>
             </li>
             <li>
-                <a href="acceuil.php">
+                <a href="../commun/index.php">
                     <i class='bx bx-box'></i>
                     <span class="links_name">Home</span>
                 </a>
@@ -38,7 +38,7 @@
                 </a>
             </li>
             <li class="log_out">
-                <a href="log_out.php">
+                <a href="../commun/log_out.php">
                     <i class='bx bx-log-out'></i>
                     <span class="links_name">Log out</span>
                 </a>

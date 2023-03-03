@@ -5,7 +5,7 @@ if (!isset($_SESSION['connect'])) {
   exit;
 } else {
   $idClient = $_SESSION['idClient'];
-  require("connexion.php");
+  require("../commun/connexion.php");
   $requete = $db->prepare('SELECT count(*) as count, c.fullName  FROM facture f INNER JOIN clients as c ON f.idClient = c.idClient WHERE f.idClient = ?');
   $requete->execute(array($idClient));
   while ($result = $requete->fetch()) {
@@ -42,7 +42,6 @@ if (!isset($_SESSION['connect'])) {
           $requete->execute(array($idClient));
           while ($result = $requete->fetch()) {
             $dateFacture   =   $result['dateFacture'];
-
           ?>
             <li> <?php echo  $dateFacture; ?> </li>
           <?php
@@ -58,14 +57,28 @@ if (!isset($_SESSION['connect'])) {
           $requete->execute(array($idClient));
           while ($result = $requete->fetch()) {
             $consommation  = $result['consommation'];
-
           ?>
             <li><?php echo $consommation; ?></li>
           <?php
           }
-
           ?>
         </ul>
+
+
+        <ul class="details">
+          <li class="topic">Etat</li>
+          <?php
+          $requete = $db->prepare('SELECT Etat FROM facture where idClient =?');
+          $requete->execute(array($idClient));
+          while ($result = $requete->fetch()) {
+            $etat  = $result['Etat'];
+          ?>
+            <li><?php echo $etat; ?></li>
+          <?php
+          }
+          ?>
+        </ul>
+
 
         <ul class="details">
           <li class="topic">Justificatifs</li>
@@ -76,7 +89,6 @@ if (!isset($_SESSION['connect'])) {
             $adresseImg   = $result['adresseImg'];
             echo  '<li> <a href="' . $adresseImg . '"> Voir justificatif </a> </li>';
           }
-
           ?>
 
 

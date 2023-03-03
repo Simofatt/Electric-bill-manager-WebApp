@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("connexion.php");
+require("../commun/connexion.php");
 require_once('../depen/pdf/fpdf.php');
 
 use \setasign\Fpdi\Fpdi;

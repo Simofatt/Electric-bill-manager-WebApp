@@ -15,14 +15,14 @@
 <body>
   <header class="container">
     <nav>
-      <a href="index.html">
+      <a href="index.php">
         <h2 class="logo">L'Y<span>DEC</span></h2>
       </a>
       <ul class="menu">
-        <li><a class="lien" href="JoinAsAClient.php" target="_blank">Join as a client</a></li>
-        <li><a class="lien" href="LoginAsAClient.php" target="_blank">Login as a client</a></li>
-        <li><a class="lien" href="LoginAsAnAdmin.php" target="_blank">Admin</a></li>
-        <li><a class="lien" href="LoginAsAnAgent.php" target="_blank">Agent</a></li>
+        <li><a class="lien" href="../clients/JoinAsAClient.php" target="_blank">Join as a client</a></li>
+        <li><a class="lien" href="../clients/LoginAsAClient.php" target="_blank">Login as a client</a></li>
+        <li><a class="lien" href="../admin/LoginAsAnAdmin.php" target="_blank">Admin</a></li>
+        <li><a class="lien" href="../agent/LoginAsAnAgent.php" target="_blank">Agent</a></li>
 
       </ul>
     </nav>
@@ -68,7 +68,7 @@
           complète pour votre maison ou votre entreprise, nous sommes là pour vous aider. Nous offrons également des
           services d'urgence 24h/24 et 7j/7 pour que vous puissiez avoir l'esprit tranquille..</p><br>
       </div>
-      <a href="JoinAsAClient.php" target="_blank"> <input type="button" name="button" class="btn" value="Learn more">
+      <a href="../clients/JoinAsAClient.php" target="_blank"> <input type="button" name="button" class="btn" value="Learn more">
         </input> <br> </a>
     </div>
     <article class="container3">
@@ -89,7 +89,7 @@
           <br>
         </div>
         <br>
-        <a href="LoginAsAClient.php" target="_blank"> <input type="button" name="button" class="btn" value="Learn more">
+        <a href="../clients/LoginAsAClient.php" target="_blank"> <input type="button" name="button" class="btn" value="Learn more">
           </input></a>
       </div>
     </article>

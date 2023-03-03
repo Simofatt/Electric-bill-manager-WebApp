@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("connexion.php");
+require("../commun/connexion.php");
 
 if (isset($_POST['search'])) {
   if (isset($_POST['idClient'])) {

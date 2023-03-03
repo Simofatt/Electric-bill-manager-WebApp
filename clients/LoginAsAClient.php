@@ -4,7 +4,7 @@ if (isset($_SESSION['connect'])) {
     header('location: clientDashboard.php?succes=1');
     exit;
 }
-require("connexion.php");
+require("../commun/connexion.php");
 if (isset($_POST['submit'])) {
     if (isset($_POST['email']) && isset($_POST['password'])) {
         if (!empty($_POST['email']) && !empty($_POST['password'])) {

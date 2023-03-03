@@ -1,6 +1,6 @@
 <?php
 session_start();
-require("connexion.php");
+require("../commun/connexion.php");
 
 if ($_SESSION['connect']) {
   $idClient           = $_SESSION['idClient'];
@@ -91,7 +91,7 @@ if (isset($_POST['submit'])) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/settings.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../css/Settings.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../css/dashboard.css?v=<?php echo time(); ?>">
   <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
   <title>Settings</title>
@@ -101,46 +101,46 @@ if (isset($_POST['submit'])) {
 </section>
 
 
+<div class="container2" id="result" style="">
+  <form class="form" method="post" action="ClientSettings.php">
+    <div class="txt-field">
+      <label for="firstName">Full name</label>
+      <input class="txt-css" type="text" idClient="firstName" name="fullName" placeholder="<?php echo  $fullName; ?>">
+    </div>
+    <div class="txt-field">
+      <label for="email">Email</label>
+      <input class="txt-css" type="email" idClient="email" name="email" placeholder=" <?php echo $email; ?>">
+    </div>
 
-<form class="form" method="post" action="ClientSettings.php">
-  <div class="txt-field">
-    <label for="firstName">Full name</label>
-    <input class="txt-css" type="text" idClient="firstName" name="fullName" placeholder="<?php echo  $fullName; ?>">
-  </div>
-  <div class="txt-field">
-    <label for="email">Email</label>
-    <input class="txt-css" type="email" idClient="email" name="email" placeholder=" <?php echo $email; ?>">
-  </div>
-
-  <div class="txt-field">
-    <label for="">Adresse</label>
-    <input class="txt-css" type="text" name="adresse" placeholder="<?php echo $adresse; ?>"">
+    <div class="txt-field">
+      <label for="">Adresse</label>
+      <input class="txt-css" type="text" name="adresse" placeholder="<?php echo $adresse; ?>"">
        
       </div>
 
   <div class=" txt-field">
-    <label for="password">Zone geographique</label>
-    <input class="txt-css" type="text" idClient="password" name="zoneGeographique" placeholder="<?php echo $zoneGeo; ?>">
-  </div>
-
-  <div class="txt-field">
-    <label for="password">Modify Password</label>
-    <input class="txt-css" type="password" idClient="password" name="password" placeholder="**********">
-  </div>
-  <?php
-  if (isset($_GET['error'])) { ?>
-    <div>
-      <p>Email Existe deja!</p>
+      <label for="password">Zone geographique</label>
+      <input class="txt-css" type="text" idClient="password" name="zoneGeographique" placeholder="<?php echo $zoneGeo; ?>">
     </div>
-  <?php
-  }
-  ?>
 
-  <div>
-    <input type="submit" name="submit" value="Enregistrer">
-  </div>
-</form>
+    <div class="txt-field">
+      <label for="password">Modify Password</label>
+      <input class="txt-css" type="password" idClient="password" name="password" placeholder="**********">
+    </div>
+    <?php
+    if (isset($_GET['error'])) { ?>
+      <div>
+        <p>Email Existe deja!</p>
+      </div>
+    <?php
+    }
+    ?>
 
+    <div>
+      <input type="submit" name="submit" value="Enregistrer">
+    </div>
+  </form>
+</div>
 </body>
 
 

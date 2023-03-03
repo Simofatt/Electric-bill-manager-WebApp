@@ -4,7 +4,7 @@ if (isset($_SESSION['connect'])) {
     header('location: AdminDashboard.php?succes=1');
     exit;
 } else {
-    require("connexion.php");
+    require("../commun/connexion.php");
     if (isset($_POST['submit'])) {
         if (isset($_POST['pseudo']) &&  isset($_POST['password'])) {
             if (!empty($_POST['pseudo']) && !empty($_POST['password'])) {
