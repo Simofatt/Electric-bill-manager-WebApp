@@ -29,10 +29,7 @@ if (!isset($_SESSION['connect'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
 </head>
-
 <?php require("navBarAdmin.php"); ?>
-
-
 
 
 <div class="home-content">
@@ -100,38 +97,30 @@ if (!isset($_SESSION['connect'])) {
         </ul>
 
         <ul class="details">
-          <ul class="details">
-            <li class="topic">Action</li>
-            <?php
-            $statut = 'nonValidée';
-            $requete  = $db->prepare('SELECT idFacture FROM facture where statut  = ?');
-            $requete->execute(array($statut));
-            while ($result = $requete->fetch()) {
-              $idFacture   = $result['idFacture'];
-              $requete2  = $db->prepare('SELECT * FROM facture where idFacture  = ?');
-              $requete2->execute(array($idFacture));
-              $result2 = $requete2->fetch();
-              if ($result2) {
-                $idClient = $result2['idClient'];
-                $consommation = $result2['consommation'];
-                $dateFacture = $result2['dateFacture'];
-                $prixHT = $result2['prixHT'];
-                $prixTTC = $result2['prixTTC'];
-            ?>
-                <li>
-                  <form action="pdfGenerate.php" method="post">
-                    <input type="hidden" name="idFacture" value="<?php echo $idFacture; ?>">
-                    <input type="submit" name="submit" value="Valider">
-                  </form>
-                </li>
+          <li class="topic">Action</li>
+          <?php
+          $statut = 'nonValidée';
+          $requete = $db->prepare('SELECT idFacture FROM facture where statut  = ?');
+          $requete->execute(array($statut));
+          while ($result = $requete->fetch()) {
+            $idFacture = $result['idFacture'];
+            $requete2 = $db->prepare('SELECT * FROM facture where idFacture  = ?');
+            $requete2->execute(array($idFacture));
+            $result2 = $requete2->fetch();
+            if ($result2) {
+              $idClient = $result2['idClient'];
+          ?>
+              <li>
+                <form action="test.php?idFacture=<?php echo $idFacture; ?>" method="post">
+                  <input type="submit" name="submit" value="Valider">
+                </form>
+              </li>
+          <?php
 
-
-            <?php
-                require("generatePDF.php");
-              }
             }
-            ?>
-          </ul>
+          }
+          ?>
+        </ul>
 
       </div>
     </div>
