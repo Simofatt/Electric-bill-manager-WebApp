@@ -7,7 +7,6 @@ if (!isset($_SESSION['connect'])) {
 } else {
     if (isset($_GET['idReclamation'])) {
         $idReclamation = $_GET['idReclamation'];
-        echo $idReclamation;
         $_SESSION['idReclamation'] = $idReclamation;
     }
 

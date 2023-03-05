@@ -37,6 +37,12 @@
                     <span class="links_name">Saisir une facture</span>
                 </a>
             </li>
+            <li>
+                <a href="payementFacture.php">
+                    <i class='bx bx-book-alt'></i>
+                    <span class="links_name">Payement</span>
+                </a>
+            </li>
             <li class="log_out">
                 <a href="../commun/log_out.php">
                     <i class='bx bx-log-out'></i>

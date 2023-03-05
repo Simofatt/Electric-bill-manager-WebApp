@@ -1,8 +1,12 @@
 <?php
 session_start();
 require("../commun/connexion.php");
+require_once('../depen/pdf/fpdf.php');
+
+use \setasign\Fpdi\Fpdi;
+
 if (empty($_SESSION['connect'])) {
-  header('location: loginAsAClient.php');
+  header('location: LoginAsAClient.php');
   exit;
 } else {
   $idClient   = $_SESSION['idClient'];
@@ -19,11 +23,12 @@ if (isset($_POST['submit'])) {
 
 
       //GERER LA DIFFERENCE EN DEBUT DE CHAQUE ANNEE 
-      $requete         = $db->prepare('SELECT difference FROM clients WHERE idClient = ? ');
+      $requete         = $db->prepare('SELECT difference ,idZoneGeographique FROM clients WHERE idClient = ?');
       $requete->execute(array($idClient));
 
       while ($result = $requete->fetch()) {
         $difference = $result['difference'];
+        $idZoneGeo  = $result['idZoneGeographique'];
       }
       if ($difference > 0) {
         if ($consommation > $difference) {
@@ -32,8 +37,8 @@ if (isset($_POST['submit'])) {
           $consommation = 0;
           $difference =  $difference - $consommation;
 
-          $requete = $db->prepare('UPDATE consommation_annuelle SET difference = ? WHERE idClient = ? ');
-          $requete->execute($array($difference, $idClient));
+          $requete1 = $db->prepare('UPDATE consommation_annuelle SET difference = ? WHERE idClient = ? ');
+          $requete1->execute($array($difference, $idClient));
         }
       } else if ($difference < 0) {
         $consommation = $consommation - $difference;
@@ -70,12 +75,105 @@ if (isset($_POST['submit'])) {
       }
 
 
-
+      //INSERTION DES INFOS DANS LA TABLE FACTURE
       if ($error == 0) {
-        $requete         = $db->prepare('INSERT INTO  facture(idClient, consommation, prixHT, prixTTC,adresseImg, Année) VALUES (?,?,?,?,?,?)');
-        $requete->execute(array($idClient, $consommation, $prixHT, $prixTTC, $address, $year));
-        header('location: saisieFacture.php?success=1');
-        exit();
+        $requete5         = $db->prepare('INSERT INTO  facture(idClient, consommation, prixHT, prixTTC,adresseImg, Année) VALUES (?,?,?,?,?,?)');
+        $requete5->execute(array($idClient, $consommation, $prixHT, $prixTTC, $address, $year));
+        $requete2          = $db->prepare('SELECT idFacture FROM facture ORDER BY idFacture DESC LIMIT 1 ');
+        $requete2->execute();
+        $result2 = $requete2->fetch();
+        if ($result2) {
+          $idFacture = $result2['idFacture'];
+        }
+
+        //AJOUT DE LA CONSOMATION DU CLIENT A LA CONSOMATION MENSULLE DE LA ZONE DONT IL FAIT PARTIE
+        $requete3         = $db->prepare('SELECT consommationMensuelle FROM zonegeographique WHERE idZoneGeo =? ');
+        $requete3->execute(array($idZoneGeo));
+        $result3 = $requete3->fetch();
+        if ($result3) {
+          $sommeConsommation   =  $result3['consommationMensuelle'];
+        }
+        $sommeConsommation += $consommation;
+        $requete4        = $db->prepare('UPDATE zonegeographique  set consommationMensuelle =?  WHERE idZoneGeo =? ');
+        $requete4->execute(array($sommeConsommation, $idZoneGeo));
+
+
+        //GENERER FACTURE CLIENT SI SA CONSOMMATION < 400 
+        ob_start();
+        if ($consommation < 400) {
+          if (isset($_POST['submit'])) {
+            $requete6 = $db->prepare('SELECT * FROM clients where idClient = ?');
+            $requete6->execute(array($idClient));
+            $result6 = $requete6->fetch();
+            if ($result6) {
+              $fullName = $result6['fullName'];
+              $email = $result6['email'];
+              $adresse = $result6['adresse'];
+            }
+            $taxes = $prixTTC - $prixHT;
+            $dateEcheance = date('d-m-Y', strtotime($dateFacture . ' +30 days'));
+            //$imagePath = "Logo.png";
+            //$imagePath2 = $address;
+            $pdf = new Fpdf();
+            $pdf->AddPage();
+            $pdf->SetFillColor(200, 200, 200);
+            $pdf->SetFont('Helvetica', 'B', 14);
+            $pdf->Cell(0, 20, utf8_decode('FACTURE DÉLECTRICITÉ'), 0, 1, 'C', true);
+            $pdf->Ln(10);
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Write(10, "Client : ");
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Write(10, $fullName . "\n");
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Write(10, "Adresse email : ");
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Write(10, utf8_decode(" " . $email . "\n\n"));
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Write(10, utf8_decode("Facture n° : "));
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Write(10, "\t" . $idFacture . " \n");
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Write(10, "Usage : ");
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Write(10, "EAU DOMESTIQUE " . "\n");
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Write(10, "Consommation : ");
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Write(10, $consommation . " KWH" . "\n");
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Write(10, "Prix HT : ");
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Write(10, number_format($prixHT, 2) . "MAD" . "\n");
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Write(10, "Taxes : ");
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Write(10, number_format($taxes, 2) . "MAD" . "\n");
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Write(10, "Prix TTC : ");
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Write(10, number_format($prixTTC, 2) . "MAD" . "\n\n");
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Write(10, "Date de facturation : ");
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Write(10, date('d-m-Y', strtotime($dateFacture)) . "\n");
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Write(10, utf8_decode("Date d'échéance : "));
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Write(10, $dateEcheance . "\n\n");
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Write(10, utf8_decode("Veuillez trouver ci-joint la facture correspondant à votre consommation d'eau domestique. Vous trouverez ci-dessous le détail de votre consommation ainsi que le montant total de votre facture. Veuillez effectuer le paiement avant la date d'échéance mentionnée ci-dessus. En cas de retard de paiement, des pénalités pourront être appliquées."));
+            $pdfPath = 'facture' . $idClient . $idFacture . '.pdf';
+            $requete7 = $db->prepare('UPDATE facture SET statut ="validée" WHERE idFacture = ?');
+            $requete7->execute(array($idFacture));
+            $pdf->Output('D', $pdfPath);
+          }
+        } else if ($consommation >= 400) {
+          $requete8 = $db->prepare('UPDATE facture SET statut ="nonValidée" WHERE idFacture = ?');
+          $requete8->execute(array($idFacture));
+        }
+
+        //header('location: saisieFacture.php?success=1');
+        // exit();
       }
     }
   }
@@ -102,7 +200,7 @@ if (isset($_POST['submit'])) {
 
 
 <div class="compose-box">
-  <<form method="post" action="saisieFacture.php" enctype="multipart/form-data">
+  <form method="post" action="saisieFacture.php" enctype="multipart/form-data">
 
 
     <div class="to">
@@ -143,7 +241,7 @@ if (isset($_POST['submit'])) {
     <div class="sub">
       <input type="submit" name="submit" value="Send">
     </div>
-    </form>
+  </form>
 </div>
 </div>
 </section>

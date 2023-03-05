@@ -32,9 +32,18 @@ if (isset($_POST['submit'])) {
       $secret = sha1($email) . time();
       $secret = sha1($secret) . time() . time();
 
+      //zoneGeo 
+
+      $requete = $db->prepare('SELECT idZoneGeo from zonegeographique WHERE nomZoneGeo =?');
+      $requete->execute(array($zoneGeo));
+      $result = $requete->fetch();
+      if ($result) {
+        $idZoneGeo  = $result['idZoneGeo'];
+      }
+
       //SENT DATA
-      $stmt = $db->prepare('INSERT INTO clients(fullName, email,adresse,zoneGeographique, motDePasse, secret) VALUES(?,?,?,?,?,?)') or die(print_r($db->errorInfo()));
-      $stmt->execute(array($fullName, $email, $adresse, $zoneGeo, $password, $secret));
+      $stmt = $db->prepare('INSERT INTO clients(fullName, email,adresse,idZoneGeographique, motDePasse, secret) VALUES(?,?,?,?,?,?)') or die(print_r($db->errorInfo()));
+      $stmt->execute(array($fullName, $email, $adresse, $idZoneGeo, $password, $secret));
 
       header('location: loginAsAClient.php?success=1');
       exit();
@@ -87,8 +96,10 @@ if (isset($_POST['submit'])) {
           <option class="zone-label">Zone géographique</option>
           <option value="anfa" name="zoneGeographique">Anfa</option>
           <option value="maarif" name="zoneGeographique">Maarif</option>
-          <option value="gauthier" name="zoneGeographique">Gauthier</option>
-          <option value="hayriad" name="zoneGeographique">Hay Riad</option>
+          <option value="derbSultan" name="zoneGeographique">Derb Sultan</option>
+          <option value="derbOmar" name="zoneGeographique">Derb Omar</option>
+          <option value="beausejor" name="zoneGeographique">Beausejor</option>
+          <option value="oasis" name="zoneGeographique">Oasis</option>
         </select>
       </div>
       <div class="txt-field">

@@ -1,9 +1,9 @@
-<!--<?php
-    /*
+<?php
+/*
 session_start();
 require("connexion.php");
-if (empty($_SESSION['connect'])) {
-  header('location: login_as_an_influencer.php');
+if (!isset($_SESSION['connect'])) {
+  header('location: LoginAsAnAdmin.php');
   exit;
 }
 if (isset($_SESSION['id_influencer'])) {
@@ -14,10 +14,10 @@ $requete->execute();
 while ($result = $requete->fetch()) {
   $count = $result['count'];
   $last_id = $result['last_id'];
-}
-*/
-    ?>
--->
+}*/
+
+?>
+
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -25,6 +25,8 @@ while ($result = $requete->fetch()) {
 <head>
   <meta charset="UTF-8">
   <title> DASHBOARD </title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <!-- Boxicons CDN Link -->
   <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="../css/dashboard.css?v=<?php echo time(); ?>">
@@ -87,58 +89,40 @@ while ($result = $requete->fetch()) {
     <div class="recent-sales box">
       <div class="title">Informations synthéthiques</div>
       <div class="sales-details">
+        <canvas id="myChart"></canvas>
+
         <ul class="details">
-          <li class="topic">Zones</li>
-          <!-- <?php /*
-          for ($i = 1; $i <= $count; $i++) {
-            $requete = $db->prepare('SELECT b.name_brand, d.id_brand, b.id FROM brands as b INNER JOIN deals as d ON b.id = d.id_brand WHERE d.id_influencer = ?');
-            $requete->execute(array($id_influencer));
-            while ($result = $requete->fetch()) {
-              $name_brand  = $result['name_brand'];
-          ?>
-              <li><?php echo $name_brand; ?> </li>
-          <?php
-            }
-          }*/
-                ?>-->
-
-
-        </ul>
-        <ul class="details">
-          <li class="topic">Consomations/mois</li>
-          <!--<?php /*
-          for ($i = 1; $i <= $last_id; $i++) {
-            $requete = $db->prepare('SELECT montant FROM deals WHERE id = ?');
-            $requete->execute(array($i));
-            while ($result = $requete->fetch()) {
-              $amount   = $result['montant'];
-          ?>
-              <li><?php echo $amount; ?></li>
-          <?php }
-          }*/
-              ?>-->
 
 
 
-        </ul>
-        <ul class="details">
-          <li class="topic">Facture non payées</li>
-          <!--   <?php /*
-          for ($i = 1; $i <= $last_id; $i++) {
-            $requete = $db->prepare('SELECT duree_contrat as duration FROM deals WHERE id = ?');
-            $requete->execute(array($i));
-            while ($result = $requete->fetch()) {
-              $duration   = $result['duration'];
-          ?>
-              <li><?php echo $duration; ?></li>
-          <?php }
-          }*/
-                  ?>-->
+          <script>
+            // Récupérer l'élément canvas
+            var ctx = document.getElementById('myChart').getContext('2d');
 
-        </ul>
-
-
-
+            // Créer le graphique
+            var myChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: ['Maarif', 'Anfa', 'Beausejor', 'Derb Sultan', 'Derb Omar', 'Oasis'],
+                datasets: [{
+                  label: 'Consommation',
+                  data: [12, 19, 3, 5, 2, 3],
+                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                  borderColor: 'rgba(255, 99, 132, 1)',
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true
+                    }
+                  }]
+                }
+              }
+            });
+          </script>
       </div>
 
     </div>
