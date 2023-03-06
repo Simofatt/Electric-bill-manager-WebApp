@@ -3,6 +3,13 @@ session_start();
 require("../commun/connexion.php");
 require_once('../depen/pdf/fpdf.php');
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../PHPMailer-master/src/Exception.php';
+require '../PHPMailer-master/src/PHPMailer.php';
+require '../PHPMailer-master/src/SMTP.php';
+
 use \setasign\Fpdi\Fpdi;
 
 
@@ -87,6 +94,33 @@ if (isset($_POST['submit'])  && isset($_GET['idFacture'])) {
         $requete3 = $db->prepare('UPDATE facture SET statut ="validée" WHERE idFacture = ?');
         $requete3->execute(array($idFacture));
         $pdf->Output('F', $pdfPath); // Save PDF to server file path
+
+
+        $mail = new PHPMailer(true);
+
+        // Configurer les paramètres du serveur SMTP
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'mohamedalhabib.fatehi@etu.uae.ac.ma';
+        $mail->Password = 'med@widadi01';
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        // Configurer les paramètres de l'email
+        $mail->setFrom('mohamedalhabib.fatehi@etu.uae.ac.ma', 'fatehi mohamed alhabib');
+        $mail->addAddress($email);
+        $mail->Subject = utf8_decode("Facture d'électricité");
+        $mail->Body =  utf8_decode("Bonjour, Voici votre facture n°" . $idFacture . "Merci de bien vouloir proceder au paiement avant la date d'echeance cité dans la facture");
+        $mail->addAttachment($pdfPath);
+
+
+        // Envoyer l'email
+        if (!$mail->send()) {
+            echo 'Erreur: ' . $mail->ErrorInfo;
+        } else {
+            echo 'Email envoyé';
+        }
         header('location: pdfGenerate.php');
         exit();
     } else if (isset($_POST['submit'])   && isset($_GET['idFacture'])) {

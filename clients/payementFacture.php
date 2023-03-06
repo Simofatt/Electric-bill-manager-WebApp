@@ -113,7 +113,7 @@ if (!isset($_SESSION['connect'])) {
                         echo '<form action="payementFacture.php?idFacture=' . $idFacture . '" method="post">';
 
 
-                        echo ' <li> <input type="submit" name="submit" value="Valider"> </li>';
+                        echo ' <li> <input type="submit" name="submit" value="Payer"> </li>';
                         echo ' </form>';
                     }
                     ?>

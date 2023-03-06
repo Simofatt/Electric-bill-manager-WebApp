@@ -19,17 +19,13 @@ if (empty($_SESSION['connect'])) {
                 $extensionsArray = array('txt');           //extensions qu'on autorise
                 $error = 2;
                 if (in_array($extensionImage, $extensionsArray)) {                                            // le type de l'image correspond à ce que l'on attend, on peut alors l'envoyer sur notre serveur
-                    $address = '../consommationAnnuelles/' . $idAgent . '.' . $extensionImage;
+                    $address = '../consommationAnnuelles/' . $idAgent . time() . rand() . time() . '.' . $extensionImage;
                     move_uploaded_file($_FILES['image']['tmp_name'], $address);                                // on renomme notre image avec une clé unique suivie du nom du fichier
                     $_SESSION['image'] =  $address;
                     $error = 0;
                 }
             }
         }
-
-
-        // initialisation des variables à une valeur par défaut
-
 
         // ouverture du fichier et lecture du contenu
         $filename = $address;
@@ -42,7 +38,7 @@ if (empty($_SESSION['connect'])) {
             if (strpos($line, 'id client:') === 0) {
                 $id_client = trim(substr($line, 10));
             } elseif (strpos($line, 'consommation:') === 0) {
-                $consommation = trim(substr($line, 14));
+                $consommationAnnuelle = trim(substr($line, 14));
             } elseif (strpos($line, 'id zonegeo:') === 0) {
                 $id_zoneGeo = trim(substr($line, 11));
             } elseif (strpos($line, 'date saisie:') === 0) {
@@ -51,13 +47,44 @@ if (empty($_SESSION['connect'])) {
         }
         fclose($file);
 
-        // affichage des valeurs extraites
-        echo "ID client : $id_client<br>";
-        echo "Consommation : $consommation<br>";
-        echo "ID zone géographique : $id_zoneGeo<br>";
-        echo "Date saisie : $date_saisie<br>";
+        if (isset($consommationAnnuelle)) {
+            if (!empty($consommationAnnuelle)) {
+                $currentYear = date('Y', strtotime($date_saisie));
+                $requete = $db->prepare("SELECT SUM(consommation) as sumConsommation FROM facture  WHERE idClient =? AND YEAR(dateFacture) =?");
+                $requete->execute(array($id_client, $currentYear));
+                $result = $requete->fetch();
+                if ($result) {
+                    $SumConsommation = $result['sumConsommation'];
+                    $difference = $consommationAnnuelle - $SumConsommation;
+                    if ($difference >= 0) {
+                        if ($difference <= 100) {
+                            $difference = 0;
+                        } else if ($difference > 100) {
+                            $difference = $difference;
+                        }
+                    } else if ($difference < 0) {
+                        $PosDifference = $difference * (-1);
+                        if ($PosDifference <= 100) {
+                            $difference = 0;
+                        } else if ($PosDifference > 100) {
+                            $difference = $PosDifference * (-1);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (isset($id_client) && isset($consommationAnnuelle) && isset($id_zoneGeo) && isset($date_saisie)) {
+            if (!empty($id_client) && !empty($consommationAnnuelle) && !empty($id_zoneGeo) && !empty($date_saisie)) {
+                $requete = $db->prepare("INSERT INTO consommation_annuelle(idClient,consommationAnnuelle,idZoneGeo,date_saisie,difference) VALUES (?,?,?,?,?)");
+                $requete->execute(array($id_client, $consommationAnnuelle, $id_zoneGeo, $date_saisie, $difference));
+                header('location: AgentDashboard.php?success=1');
+                exit;
+            }
+        }
     }
 }
+
 
 
 

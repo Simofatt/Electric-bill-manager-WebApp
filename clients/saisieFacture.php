@@ -5,7 +5,7 @@ require_once('../depen/pdf/fpdf.php');
 
 use \setasign\Fpdi\Fpdi;
 
-if (empty($_SESSION['connect'])) {
+if (!isset($_SESSION['connect'])) {
   header('location: LoginAsAClient.php');
   exit;
 } else {
@@ -21,29 +21,28 @@ if (isset($_POST['submit'])) {
       //EXTRACTION DE L'ANNEE 
       $year = date("Y", strtotime($dateFacture));
 
-
       //GERER LA DIFFERENCE EN DEBUT DE CHAQUE ANNEE 
-      $requete         = $db->prepare('SELECT difference ,idZoneGeographique FROM clients WHERE idClient = ?');
+      $requete         = $db->prepare('SELECT difference FROM consommation Annuelle WHERE idClient = ?');
       $requete->execute(array($idClient));
-
       while ($result = $requete->fetch()) {
         $difference = $result['difference'];
-        $idZoneGeo  = $result['idZoneGeographique'];
       }
-      if ($difference > 0) {
-        if ($consommation > $difference) {
+      if (isset($difference)) {
+        if ($difference > 0) {
+          if ($consommation >= $difference) {
+            $consommation = $consommation - $difference;
+            $difference =  0;
+          } else {
+            $difference =  $difference - $consommation;
+            $consommation = 0;
+          }
+        } else if ($difference < 0) {
           $consommation = $consommation - $difference;
-        } else {
-          $consommation = 0;
-          $difference =  $difference - $consommation;
-
-          $requete1 = $db->prepare('UPDATE consommation_annuelle SET difference = ? WHERE idClient = ? ');
-          $requete1->execute($array($difference, $idClient));
+          $difference = 0;
         }
-      } else if ($difference < 0) {
-        $consommation = $consommation - $difference;
+        $requete1 = $db->prepare('UPDATE consommation_annuelle SET difference = ? WHERE idClient = ? ');
+        $requete1->execute($array($difference, $idClient));
       }
-
 
       //FACTURACTION DU PRIX 
       if ($consommation <= 100) {
@@ -85,17 +84,6 @@ if (isset($_POST['submit'])) {
         if ($result2) {
           $idFacture = $result2['idFacture'];
         }
-
-        //AJOUT DE LA CONSOMATION DU CLIENT A LA CONSOMATION MENSULLE DE LA ZONE DONT IL FAIT PARTIE
-        $requete3         = $db->prepare('SELECT consommationMensuelle FROM zonegeographique WHERE idZoneGeo =? ');
-        $requete3->execute(array($idZoneGeo));
-        $result3 = $requete3->fetch();
-        if ($result3) {
-          $sommeConsommation   =  $result3['consommationMensuelle'];
-        }
-        $sommeConsommation += $consommation;
-        $requete4        = $db->prepare('UPDATE zonegeographique  set consommationMensuelle =?  WHERE idZoneGeo =? ');
-        $requete4->execute(array($sommeConsommation, $idZoneGeo));
 
 
         //GENERER FACTURE CLIENT SI SA CONSOMMATION < 400 
@@ -172,8 +160,8 @@ if (isset($_POST['submit'])) {
           $requete8->execute(array($idFacture));
         }
 
-        //header('location: saisieFacture.php?success=1');
-        // exit();
+        header('location: saisieFacture.php?success=1');
+        exit();
       }
     }
   }

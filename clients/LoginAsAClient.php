@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['connect'])) {
-    header('location: clientDashboard.php?succes=1');
+    header('location: clientDashboard.php?success=1');
     exit;
 }
 require("../commun/connexion.php");
@@ -24,18 +24,18 @@ if (isset($_POST['submit'])) {
                     $_SESSION['idClient'] = $user['idClient'];
                     $_SESSION['email']    = $user['email'];
                     $_SESSION['adresse']  = $user['adresse'];
-                    $_SESSION['zoneGeo']  = $user['zoneGeographique'];
+                    $_SESSION['idZoneGeo']  = $user['idZoneGeographique'];
                     $_SESSION['connect']  = 1;
 
                     if (isset($_POST['connect'])) {
                         setcookie('connect', $user['secret'], time() + 365 * 24 * 3600, '/', null, false, true);
                     }
-                    header('location: clientDashboard.php?succes=1');
+                    header('location: clientDashboard.php?success=1');
                     exit();
                 }
             }
             if ($error == 1) {
-                header('location: loginAsAClient.php?error=1');
+                header('location: LoginAsAClient.php?error=1');
                 exit();
             }
         }

@@ -9,6 +9,7 @@ if (!isset($_SESSION['connect'])) {
   if (isset($_POST['search'])) {
     if (isset($_POST['idClient'])) {
       $idClient =  htmlspecialchars($_POST['idClient']);
+      $_SESSION['idClient'] = $idClient;
     }
   }
   if (isset($idClient)) {
@@ -31,7 +32,7 @@ if (!isset($_SESSION['connect'])) {
       }
     }
     if (isset($idClient)) {
-      $requete  = $db->prepare('SELECT count(idClient) as count FROM clients where idClient = ?');
+      $requete  = $db->prepare('SELECT count(*) as count FROM clients where idClient = ?');
       $requete->execute(array($idClient));
       $result = $requete->fetch();
       if ($result) {
@@ -40,7 +41,7 @@ if (!isset($_SESSION['connect'])) {
     }
   }
   if (isset($_POST['submit'])) {
-
+    $idClient = $_SESSION['idClient'];
     if (isset($_POST['fullName'])) {
       if (!empty($_POST['fullName'])) {
         $fullName          = htmlspecialchars($_POST['fullName']);
@@ -94,6 +95,7 @@ if (!isset($_SESSION['connect'])) {
     }
     if (isset($_POST['password'])) {
       if (!empty($_POST['password'])) {
+        $password           = htmlspecialchars($_POST['password']);
         $password           = "aq1" . sha1($password . "1234") . "25";
         $requete = $db->prepare('UPDATE clients SET motDePasse= ? WHERE idClient = ?');
         $requete->execute(array($password, $idClient));
@@ -131,14 +133,14 @@ if (!isset($_SESSION['connect'])) {
       <input class="txt-css" type="text" id="firstName" name="idClient" placeholder="ID CLIENT" style="width :250px; ">
     </div>
     <div>
-      <input type="submit" id="search" value="Search" name="search" style="width :250px; ">
+      <input type="submit" id="search" value="search" name="search" style="width :250px; ">
     </div>
   </form>
 </div>
 
 <?php if (isset($verification) && $verification != 0) {
 ?>
-  <div class="container2" id="result" style="">
+  <div class="container2" id="result">
     <form class=" form" method="post" action="AdminClientSettings.php">
       <div class="txt-field">
         <label for="firstName">Full name</label>

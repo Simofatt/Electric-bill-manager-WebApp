@@ -2,83 +2,98 @@
 session_start();
 require("../commun/connexion.php");
 
-if ($_SESSION['connect']) {
+
+if (!isset($_SESSION['connect'])) {
+  header('location: LoginAsAClient.php');
+} else if (isset($_SESSION['connect'])) {
   $idClient           = $_SESSION['idClient'];
   $fullName           = $_SESSION['fullName'];
   $adresse            = $_SESSION['adresse'];
   $email              = $_SESSION['email'];
-  $zoneGeo            = $_SESSION['zoneGeo'];
-} else if (!isset($_SESSION['connect'])) {
-  header('location: loginAsAClient.php');
-}
+  $idZoneGeo          = $_SESSION['idZoneGeo'];
 
-$requete  = $db->prepare('SELECT motDePasse FROM clients where idClient = ?');
-$requete->execute(array($idClient));
-while ($result = $requete->fetch()) {
-  $password  = $result['motDePasse'];
-}
-
-if (isset($_POST['submit'])) {
-  if (isset($_POST['fullName'])) {
-    if (!empty($_POST['fullName'])) {
-      $fullName          = htmlspecialchars($_POST['fullName']);
-      $requete = $db->prepare('UPDATE clients SET fullName =? WHERE idClient = ?');
-      $requete->execute(array($fullName, $idClient));
-    }
+  $requete2 = $db->prepare('SELECT nomZoneGeo FROM zonegeographique WHERE idZoneGeo = ?');
+  $requete2->execute(array($idZoneGeo));
+  $result2 = $requete2->fetch();
+  if ($result2) {
+    $nameZoneGeo = $result2['nomZoneGeo'];
   }
-  if (isset($_POST['adresse'])) {
-    if (!empty($_POST['adresse'])) {
-      $adresse        = htmlspecialchars($_POST['adresse']);
-      $requete = $db->prepare('UPDATE clients SET adresse =? WHERE idClient = ?');
-      $requete->execute(array($adresse, $idClient));
-    }
-  }
-  if (isset($_POST['email'])) {
-    if (!empty($_POST['email'])) {
-      $email              = htmlspecialchars($_POST['email']);
-      $stmt = $db->prepare("SELECT count(*) as number_email from clients where  email=?");
-      $stmt->execute(array($email));
 
-      while ($result = $stmt->fetch()) {
-        if ($result['number_email'] != 0) {
-          header('Location: ClientSettings.php?error=1');
-          exit();
-        } else {
-          $requete = $db->prepare('UPDATE clients SET email = ? WHERE idClient = ?');
-          $requete->execute(array($email, $idClient));
+  $requete  = $db->prepare('SELECT motDePasse FROM clients where idClient = ?');
+  $requete->execute(array($idClient));
+  while ($result = $requete->fetch()) {
+    $password  = $result['motDePasse'];
+  }
+
+  if (isset($_POST['submit'])) {
+    if (isset($_POST['fullName'])) {
+      if (!empty($_POST['fullName'])) {
+        $fullName          = htmlspecialchars($_POST['fullName']);
+        $requete = $db->prepare('UPDATE clients SET fullName =? WHERE idClient = ?');
+        $requete->execute(array($fullName, $idClient));
+      }
+    }
+    if (isset($_POST['adresse'])) {
+      if (!empty($_POST['adresse'])) {
+        $adresse        = htmlspecialchars($_POST['adresse']);
+        $requete = $db->prepare('UPDATE clients SET adresse =? WHERE idClient = ?');
+        $requete->execute(array($adresse, $idClient));
+      }
+    }
+    if (isset($_POST['email'])) {
+      if (!empty($_POST['email'])) {
+        $email              = htmlspecialchars($_POST['email']);
+        $stmt = $db->prepare("SELECT count(*) as number_email from clients where  email=?");
+        $stmt->execute(array($email));
+
+        while ($result = $stmt->fetch()) {
+          if ($result['number_email'] != 0) {
+            header('Location: ClientSettings.php?error=1');
+            exit();
+          } else {
+            $requete = $db->prepare('UPDATE clients SET email = ? WHERE idClient = ?');
+            $requete->execute(array($email, $idClient));
+          }
         }
       }
     }
-  }
-  if (isset($_POST['fullName'])) {
-    if (!empty($_POST['fullName'])) {
-      $fullName          = htmlspecialchars($_POST['fullName']);
-      $requete = $db->prepare('UPDATE clients SET fullName =? WHERE idClient = ?');
-      $requete->execute(array($fullName, $idClient));
+    if (isset($_POST['fullName'])) {
+      if (!empty($_POST['fullName'])) {
+        $fullName          = htmlspecialchars($_POST['fullName']);
+        $requete = $db->prepare('UPDATE clients SET fullName =? WHERE idClient = ?');
+        $requete->execute(array($fullName, $idClient));
+      }
     }
-  }
-  if (isset($_POST['zoneGeographique'])) {
-    if (!empty($_POST['zoneGeographique'])) {
-      $zoneGeo  =   htmlspecialchars($_POST['zoneGeographique']);
-      $requete = $db->prepare('UPDATE clients SET zoneGeographique = ? WHERE idClient = ?');
-      $requete->execute(array($zoneGeo, $idClient));
+    if (isset($_POST['zoneGeographique'])) {
+      if (!empty($_POST['zoneGeographique'])) {
+        $nameZoneGeo = htmlspecialchars($_POST['zoneGeographique']);
+        $requete2 = $db->prepare('SELECT idZoneGeo FROM zonegeographique WHERE nomZoneGeo =?');
+        $requete2->execute(array($nameZoneGeo));
+        $result2 = $requete2->fetch();
+        if ($result2) {
+          $idZoneGeo = $result2['idZoneGeo'];
+          $requete = $db->prepare('UPDATE clients SET idZoneGeographique =? WHERE idClient =?');
+          $requete->execute(array($idZoneGeo, $idClient));
+        }
+      }
     }
-  }
-  if (isset($_POST['password'])) {
-    if (!empty($_POST['password'])) {
-      $password           = "aq1" . sha1($password . "1234") . "25";
-      $requete = $db->prepare('UPDATE clients SET motDePasse= ? WHERE idClient = ?');
-      $requete->execute(array($password, $idClient));
+    if (isset($_POST['password'])) {
+      if (!empty($_POST['password'])) {
+        $password           = "aq1" . sha1($password . "1234") . "25";
+        $requete = $db->prepare('UPDATE clients SET motDePasse= ? WHERE idClient = ?');
+        $requete->execute(array($password, $idClient));
+      }
     }
-  }
-  $_SESSION['adresse']           = $adresse;
-  $_SESSION['fullName']          = $fullName;
-  $_SESSION['idClient']          = $idClient;
-  $_SESSION['email']             = $email;
-  $_SESSION['zoneGeo']           = $zoneGeo;
+    $_SESSION['adresse']           = $adresse;
+    $_SESSION['fullName']          = $fullName;
+    $_SESSION['idClient']          = $idClient;
+    $_SESSION['email']             = $email;
+    $_SESSION['idZoneGeo']         = $idZoneGeo;
 
-  header('location: ClientSettings.php?success=1');
-  exit();
+
+    header('location: ClientSettings.php?success=1');
+    exit();
+  }
 }
 
 
@@ -101,7 +116,7 @@ if (isset($_POST['submit'])) {
 </section>
 
 
-<div class="container2" id="result" style="">
+<div class="container2" id="result">
   <form class="form" method="post" action="ClientSettings.php">
     <div class="txt-field">
       <label for="firstName">Full name</label>
@@ -118,11 +133,18 @@ if (isset($_POST['submit'])) {
        
       </div>
 
-  <div class=" txt-field">
-      <label for="password">Zone geographique</label>
-      <input class="txt-css" type="text" idClient="password" name="zoneGeographique" placeholder="<?php echo $zoneGeo; ?>">
+      <div class=" txt-field">
+      <label for="Zone gerographique">Zone geographique</label>
+      <select name="zoneGeographique" id="zoneGeographique" class="zone-select" required>
+        <option class="zone-label"><?php echo $nameZoneGeo; ?></option>
+        <option value="Anfa" name="zoneGeographique">Anfa</option>
+        <option value="Maarif" name="zoneGeographique">Maarif</option>
+        <option value="Derb Sultan" name="zoneGeographique">Derb Sultan</option>
+        <option value="Derb Omar" name="zoneGeographique">Derb Omar</option>
+        <option value="Beausejor" name="zoneGeographique">Beausejor</option>
+        <option value="Oasis" name="zoneGeographique">Oasis</option>
+      </select>
     </div>
-
     <div class="txt-field">
       <label for="password">Modify Password</label>
       <input class="txt-css" type="password" idClient="password" name="password" placeholder="**********">

@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['connect'])) {
-  header('location: loginAsAClient.php');
+  header('location: LoginAsAClient.php');
   exit;
 } else {
   $idClient = $_SESSION['idClient'];
@@ -54,8 +54,9 @@ if (!isset($_SESSION['connect'])) {
         <ul class="details">
           <li class="topic">Consomations</li>
           <?php
-          $requete = $db->prepare('SELECT consommation FROM facture where idClient =?');
-          $requete->execute(array($idClient));
+
+          $requete = $db->prepare('SELECT consommation FROM facture where idClient =?  AND Année =?');
+          $requete->execute(array($idClient, $annee));
           while ($result = $requete->fetch()) {
             $consommation  = $result['consommation'];
           ?>
@@ -69,8 +70,9 @@ if (!isset($_SESSION['connect'])) {
         <ul class="details">
           <li class="topic">Etat</li>
           <?php
-          $requete = $db->prepare('SELECT Etat FROM facture where idClient =?');
-          $requete->execute(array($idClient));
+
+          $requete = $db->prepare('SELECT Etat FROM facture where idClient =? AND Année =?');
+          $requete->execute(array($idClient, $annee));
           while ($result = $requete->fetch()) {
             $etat  = $result['Etat'];
           ?>
@@ -84,8 +86,9 @@ if (!isset($_SESSION['connect'])) {
         <ul class="details">
           <li class="topic">Justificatifs</li>
           <?php
-          $requete = $db->prepare('SELECT adresseImg FROM facture WHERE idClient = ? ');
-          $requete->execute(array($idClient));
+
+          $requete = $db->prepare('SELECT adresseImg FROM facture WHERE idClient = ?  AND Année =?');
+          $requete->execute(array($idClient, $annee));
           while ($result = $requete->fetch()) {
             $adresseImg   = $result['adresseImg'];
             echo  '<li> <a href="' . $adresseImg . '"> Voir justificatif </a> </li>';
