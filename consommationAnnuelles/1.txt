@@ -1,0 +1,4 @@
+ID CLIENT: 5 
+Consommation: 5000
+ID zoneGeo: 2
+Date Saisie: 1-12-2023 

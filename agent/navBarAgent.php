@@ -7,7 +7,7 @@
 
         <ul class="nav-links">
             <li>
-                <a href="clientDashboard.php" class="active">
+                <a href="" class="active">
                     <i class='bx bx-grid-alt'></i>
                     <span class="links_name">Dashboard</span>
                 </a>
@@ -22,13 +22,13 @@
 
 
             <li>
-                <a href="File.php">
+                <a href="AgentDashboard.php">
                     <i class='bx bx-book-alt'></i>
                     <span class="links_name">Saisir fichier annuelle</span>
                 </a>
             </li>
-            <li class="../commun/log_out">
-                <a href="log_out.php">
+            <li class="log_out">
+                <a href="../commun/log_out.php">
                     <i class='bx bx-log-out'></i>
                     <span class="links_name">Log out</span>
                 </a>
@@ -46,7 +46,7 @@
                 <i class='bx bx-search'></i>
             </div>
             <div class="profile-details">
-                <a href="profile.php"> <span class="admin_name">Mohamed Fatehi</span> </a>
+                <a href="profile.php"> <span class="admin_name">Hamid kahuro</span> </a>
 
             </div>
         </nav>

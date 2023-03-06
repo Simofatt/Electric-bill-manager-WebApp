@@ -1,18 +1,42 @@
 <?php
 require("../commun/connexion.php");
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../PHPMailer-master/src/Exception.php';
+require '../PHPMailer-master/src/PHPMailer.php';
+require '../PHPMailer-master/src/SMTP.php';
 if (isset($_POST['submit'])) {
-    $idZoneGeo = 2;
-    $consommation = 150;
-    $requete3         = $db->prepare('SELECT consommationMensuelle FROM zonegeographique WHERE idZoneGeo =? ');
-    $requete3->execute(array($idZoneGeo));
-    $result3 = $requete3->fetch();
-    if ($result3) {
-        $sommeConsommation   =  $result3['consommationMensuelle'];
+    // Inclure la librairie PHPMailer
+
+
+    // Créer une nouvelle instance de PHPMailer
+    $mail = new PHPMailer(true);
+
+    // Configurer les paramètres du serveur SMTP
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'mohamedalhabib.fatehi@etu.uae.ac.ma';
+    $mail->Password = 'med@widadi01';
+    $mail->SMTPSecure = 'tls';
+    $mail->Port = 587;
+
+    // Configurer les paramètres de l'email
+    $mail->setFrom('mohamedalhabib.fatehi@etu.uae.ac.ma', 'fatehi mohamed alhabib');
+    $mail->addAddress('simosins78@gmail.com');
+    $mail->Subject = 'Sujet de l\'email';
+    $mail->Body = 'Contenu de l\'email';
+
+    // Envoyer l'email
+    if (!$mail->send()) {
+        echo 'Erreur: ' . $mail->ErrorInfo;
+    } else {
+        echo 'Email envoyé';
     }
-    $sommeConsommation += $consommation;
-    $requete4        = $db->prepare('UPDATE zonegeographique  set consommationMensuelle =?  WHERE idZoneGeo =? ');
-    $requete4->execute(array($sommeConsommation, $idZoneGeo));
 }
+
 ?>
 
 <!DOCTYPE html>

@@ -5,6 +5,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
+  
 }
 .sidebar{
   position: fixed;
@@ -176,7 +177,7 @@ nav .profile-details i{
 }
 .home-section .home-content{
   position: relative;
-  padding-top: 104px;
+  padding-top: 150px;
 }
 .home-content .overview-boxes{
   display: flex;
@@ -185,7 +186,11 @@ nav .profile-details i{
   flex-wrap: wrap;
   padding: 0 20px;
   margin-bottom: 26px;
+  
+
 }
+
+
 .overview-boxes .box{
   display: flex;
   align-items: center;
@@ -195,16 +200,22 @@ nav .profile-details i{
   padding: 15px 14px;
   border-radius: 12px;
   box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+ 
+  
+  ;
 }
 .overview-boxes .box-topic{
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 500;
+  font-weight: 600;
+  
 }
 .home-content .box .number{
   display: inline-block;
-  font-size: 35px;
+  font-size: 25px;
   margin-top: -6px;
-  font-weight: 500;
+  margin-left : 50px;
+  
 }
 .home-content .box .indicator{
   display: flex;
@@ -265,8 +276,10 @@ nav .profile-details i{
 .home-content .sales-boxes .recent-sales{
   width: 100%;
   background: #fff;
-  padding: 20px 30px;
-  margin: 0 20px;
+  padding: 30px 30px;
+  margin:  0 20px;
+  position: fixed;
+  top :300px;
   border-radius: 12px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
@@ -274,6 +287,7 @@ nav .profile-details i{
   display: flex;
   align-items: center;
   justify-content: space-between;
+  
 }
 .sales-boxes .box .title{
   font-size: 24px;
@@ -664,3 +678,25 @@ option.zone:hover {
 .sidebar-button nav { 
   z-index: auto;
 }
+
+/*Dashbpard input */
+
+.home-section  form  {
+  position : fixed ; 
+ left : 600px ;
+ top : 10px;
+ z-index: 200;
+ display:  flex;
+
+}
+.home-section  form button { 
+  width: 250px;
+  position: fixed ; 
+  top : 60px ; 
+  left : 650px;
+
+ 
+
+  
+}
+

@@ -257,3 +257,30 @@ width: 260px;
   .sidebar-button nav { 
     z-index: auto;
   }
+
+  /*zonegeo */
+.txt-field select {
+  width: 480px;
+  height: 47px;
+  border-color: #BF9341 ;
+  border-width: 0.1px;
+  outline: none;
+  transition: .2s linear;
+  color : white;
+  padding: 0px 0 0 5px;
+  font-size: 15px;
+  margin-top: 10px;
+
+ 
+}
+
+.txt-field select:focus{
+  opacity: 100%;
+  border : 2px solid #BF9341;
+  color : gray;
+ 
+}
+.txt-field select:valid{
+  color: gray;
+ 
+}

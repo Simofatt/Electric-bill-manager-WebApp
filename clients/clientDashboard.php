@@ -38,8 +38,9 @@ if (!isset($_SESSION['connect'])) {
         <ul class="details">
           <li class="topic">Date Factures </li>
           <?php
-          $requete = $db->prepare('SELECT dateFacture FROM facture where idClient =?');
-          $requete->execute(array($idClient));
+          $annee = date('Y');
+          $requete = $db->prepare('SELECT dateFacture FROM facture where idClient =? AND Année =?');
+          $requete->execute(array($idClient, $annee));
           while ($result = $requete->fetch()) {
             $dateFacture   =   $result['dateFacture'];
           ?>

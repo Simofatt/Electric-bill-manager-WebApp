@@ -45,36 +45,26 @@
                     <span class="links_name">Voir Reclamations</span>
                 </a>
             </li>
-            <li class="../commun/log_out">
-                <a href="log_out.php">
+            <li class="log_out">
+                <a href="../commun/log_out.php">
                     <i class='bx bx-log-out'></i>
                     <span class="links_name">Log out</span>
                 </a>
             </li>
         </ul>
     </div>
-    <section class="home-section">
-        <nav>
-            <div class="sidebar-button">
-                <i class='bx bx-menu sidebarBtn'></i>
-                <span class="dashboard">Dashboard</span>
-            </div>
-            <div class="profile-details">
-                <a href="profile.php"> <span class="admin_name">Mohamed Fatehi</span> </a>
-
-            </div>
-        </nav>
 
 
 
-        <script>
-            let sidebar = document.querySelector(".sidebar");
-            let sidebarBtn = document.querySelector(".sidebarBtn");
-            sidebarBtn.onclick = function() {
-                sidebar.classList.toggle("active");
-                if (sidebar.classList.contains("active")) {
-                    sidebarBtn.classList.replace("bx-menu", "bx-menu-alt-right");
-                } else
-                    sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
-            }
-        </script>
+
+    <script>
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".sidebarBtn");
+        sidebarBtn.onclick = function() {
+            sidebar.classList.toggle("active");
+            if (sidebar.classList.contains("active")) {
+                sidebarBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+            } else
+                sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+        }
+    </script>

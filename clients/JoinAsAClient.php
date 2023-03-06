@@ -7,7 +7,7 @@ if (isset($_POST['submit'])) {
       $fullName            = htmlspecialchars($_POST['fullName']);
       $email               = htmlspecialchars($_POST['email']);
       $adresse             = htmlspecialchars($_POST['adresse']);
-      $zoneGeo             = htmlspecialchars($_POST['zoneGeographique']);
+      $nameZoneGeo         = htmlspecialchars($_POST['zoneGeographique']);
       $password            = htmlspecialchars($_POST['password']);
       $passwordConfirm     = htmlspecialchars($_POST['passwordConfirm']);
       //CHECK IF PASSWORDS ARE THE SAME
@@ -35,7 +35,7 @@ if (isset($_POST['submit'])) {
       //zoneGeo 
 
       $requete = $db->prepare('SELECT idZoneGeo from zonegeographique WHERE nomZoneGeo =?');
-      $requete->execute(array($zoneGeo));
+      $requete->execute(array($nameZoneGeo));
       $result = $requete->fetch();
       if ($result) {
         $idZoneGeo  = $result['idZoneGeo'];
@@ -65,7 +65,7 @@ if (isset($_POST['submit'])) {
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Square+Peg&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/join_as_a_brand.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../css/joinAsAClient.css?v=<?php echo time(); ?>">
 </head>
 
 <body>

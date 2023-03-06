@@ -44,27 +44,46 @@ if (!isset($_SESSION['connect'])) {
 <?php require("navBarAdmin.php"); ?>
 
 
+<section class="home-section">
+    <nav>
+        <div class="sidebar-button">
+            <i class='bx bx-menu sidebarBtn'></i>
+            <span class="dashboard">Dashboard</span>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Search">
+            <i class='bx bx-search'></i>
+        </div>
+        <div class="profile-details">
+            <a href="ClientSettings.php"> <span class="admin_name">Mohamed Fatehi</span> </a>
 
-<div class="compose-box">
-    <form method="post" action="answerReclamation.php">
-        <div class="too">
-            <label for="message">Message:</label><br>
-            <textarea id="message" name="message" rows="10" cols="30" required></textarea><br>
         </div>
-        <?php
-        if (isset($_GET['success'])) { ?>
-            <div>
-                <p>La reclamation a bien eté envoyée!</p><br>
+    </nav>
+
+
+
+
+
+    <div class="compose-box">
+        <form method="post" action="answerReclamation.php">
+            <div class="too">
+                <label for="message">Message:</label><br>
+                <textarea id="message" name="message" rows="10" cols="30" required></textarea><br>
             </div>
-        <?php
-        }
-        ?>
-        <div class="sub">
-            <input type="submit" name="submit" value="Send">
-        </div>
-    </form>
-</div>
-</div>
+            <?php
+            if (isset($_GET['success'])) { ?>
+                <div>
+                    <p>La reclamation a bien eté envoyée!</p><br>
+                </div>
+            <?php
+            }
+            ?>
+            <div class="sub">
+                <input type="submit" name="submit" value="Send">
+            </div>
+        </form>
+    </div>
+    </div>
 </section>
 
 
