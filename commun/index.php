@@ -71,28 +71,6 @@
       <a href="../clients/JoinAsAClient.php" target="_blank"> <input type="button" name="button" class="btn" value="Learn more">
         </input> <br> </a>
     </div>
-    <article class="container3">
-      <div class="divrelativ2">
-        <div class="p9">
-          <p>Stats at-the-ready</p>
-        </div>
-        <div class="t4">
-          <h2>Analyze any influencer in <br> the world </h2> <br>
-        </div>
-        <div class="p10">
-          <p>Notre équipe d'électriciens professionnels est hautement qualifiée et expérimentée dans<br> tous les
-            aspects
-            des installations électriques. Nous sommes également constamment <br>formés aux dernières technologies et
-            techniques pour assurer des services de qualité <br>supérieure. Nous sommes à l'écoute de vos besoins et
-            travaillerons avec vous pour <br>trouver des solutions efficaces et durables.
-          </p>
-          <br>
-        </div>
-        <br>
-        <a href="../clients/LoginAsAClient.php" target="_blank"> <input type="button" name="button" class="btn" value="Learn more">
-          </input></a>
-      </div>
-    </article>
   </section>
   <footer>
   </footer>

@@ -42,52 +42,67 @@ if (isset($_POST['submit'])  && isset($_GET['idFacture'])) {
         //$imagePath2 = $address;
         // Creating a document object
         $pdf = new Fpdf();
+        $pdf = new Fpdf();
+
+        $pdf->SetAutoPageBreak(false);
         $pdf->AddPage();
-        // Adding color and styles
-        $pdf->SetFillColor(200, 200, 200);
-        $pdf->SetFont('Helvetica', 'B', 14);
-        $pdf->Cell(0, 20, utf8_decode('FACTURE DÉLECTRICITÉ'), 0, 1, 'C', true);
+
+        // Ajout de la couleur et des styles
+        $pdf->SetFillColor(26, 188, 156);
+        $pdf->SetFont('Helvetica', 'B', 16);
+
+        // En-tête de la facture
+        $pdf->Cell(0, 30, utf8_decode("FACTURE D'ÉLECTRICITÉ"), 0, 1, 'C', true);
+        $pdf->Ln(20);
+
+        // Informations sur le client
+        $pdf->SetFont('Helvetica', 'B', 12);
+        $pdf->SetTextColor(44, 62, 80);
+        $pdf->Cell(0, 10, utf8_decode("Informations du client"), 0, 1, 'L');
+        $pdf->SetFont('Helvetica', '', 10);
+        $pdf->SetTextColor(52, 73, 94);
+        $pdf->Cell(0, 10, utf8_decode("Nom complet : " . $fullName), 0, 1, 'L');
+        $pdf->Cell(0, 10, utf8_decode("Adresse email : " . $email), 0, 1, 'L');
         $pdf->Ln(10);
-        $pdf->SetFont('Helvetica', 'B', 10);
-        $pdf->Write(10, "Client : ");
+
+        // Informations de facturation
+        $pdf->SetFont('Helvetica', 'B', 12);
+        $pdf->SetTextColor(44, 62, 80);
+        $pdf->Cell(0, 10, utf8_decode("Informations de facturation"), 0, 1, 'L');
         $pdf->SetFont('Helvetica', '', 10);
-        $pdf->Write(10, $fullName . "\n");
-        $pdf->SetFont('Helvetica', 'B', 10);
-        $pdf->Write(10, "Adresse email : ");
+        $pdf->SetTextColor(52, 73, 94);
+        $pdf->Cell(0, 10, utf8_decode("Facture n° : " . $idFacture), 0, 1, 'L');
+        $pdf->Cell(0, 10, utf8_decode("Usage : ÉLECTRICITÉ DOMESTIQUE"), 0, 1, 'L');
+        $pdf->Cell(0, 10, utf8_decode("Consommation : " . $consommation . " KWH"), 0, 1, 'L');
+        $pdf->Ln(10);
+
+        // Détail des prix
+        $pdf->SetFont('Helvetica', 'B', 12);
+        $pdf->SetTextColor(44, 62, 80);
+        $pdf->Cell(0, 10, utf8_decode("Détail des prix"), 0, 1, 'L');
         $pdf->SetFont('Helvetica', '', 10);
-        $pdf->Write(10, utf8_decode(" " . $email . "\n\n"));
-        $pdf->SetFont('Helvetica', 'B', 10);
-        $pdf->Write(10, utf8_decode("Facture n° : "));
+        $pdf->SetTextColor(52, 73, 94);
+        $pdf->Cell(0, 10, utf8_decode("Prix HT : " . number_format($prixHT, 2) . " MAD"), 0, 1, 'L');
+        $pdf->Cell(0, 10, utf8_decode("Taxes : " . number_format($taxes, 2) . " MAD"), 0, 1, 'L');
+        $pdf->Cell(0, 10, utf8_decode("Prix TTC : " . number_format($prixTTC, 2) . " MAD"), 0, 1, 'L');
+        $pdf->Ln(10);
+
+        // Dates
+        $pdf->SetFont('Helvetica', 'B', 12);
+        $pdf->SetTextColor(44, 62, 80);
+        $pdf->Cell(0, 10, utf8_decode("Dates"), 0, 1, 'L');
         $pdf->SetFont('Helvetica', '', 10);
-        $pdf->Write(10, "\t" . $idFacture  . " \n");
-        $pdf->SetFont('Helvetica', 'B', 10);
-        $pdf->Write(10, "Usage : ");
-        $pdf->SetFont('Helvetica', '', 10);
-        $pdf->Write(10, "EAU DOMESTIQUE " . "\n");
-        $pdf->SetFont('Helvetica', 'B', 10);
-        $pdf->Write(10, "Consommation : ");
-        $pdf->SetFont('Helvetica', '', 10);
-        $pdf->Write(10, $consommation . " KWH" . "\n");
-        $pdf->SetFont('Helvetica', 'B', 10);
-        $pdf->Write(10, "Prix HT : ");
-        $pdf->SetFont('Helvetica', '', 10);
-        $pdf->Write(10, number_format($prixHT, 2) . "MAD" . "\n");
-        $pdf->SetFont('Helvetica', 'B', 10);
-        $pdf->Write(10, "Taxes : ");
-        $pdf->SetFont('Helvetica', '', 10);
-        $pdf->Write(10, number_format($taxes, 2) . "MAD" . "\n");
-        $pdf->SetFont('Helvetica', 'B', 10);
-        $pdf->Write(10, "Prix TTC : ");
-        $pdf->SetFont('Helvetica', '', 10);
-        $pdf->Write(10, number_format($prixTTC, 2) . "MAD" . "\n\n");
-        $pdf->SetFont('Helvetica', 'B', 10);
-        $pdf->Write(10, "Date de facturation : ");
-        $pdf->SetFont('Helvetica', '', 10);
-        $pdf->Write(10, date('d-m-Y', strtotime($dateFacture)) . "\n");
-        $pdf->SetFont('Helvetica', 'B', 10);
-        $pdf->Write(10, utf8_decode("Date d'échéance : "));
-        $pdf->SetFont('Helvetica', '', 10);
-        $pdf->Write(10, $dateEcheance . "\n\n");
+        $pdf->SetTextColor(52, 73, 94);
+        $pdf->Cell(0, 10, utf8_decode("Date de facturation : " . date('d-m-Y', strtotime($dateFacture))), 0, 1, 'L');
+        $pdf->Cell(0, 10, utf8_decode("Date limite de paiement : " . date('d-m-Y', strtotime($dateLimite))), 0, 1, 'L');
+        $pdf->Ln(20);
+
+        // Pied de page
+        $pdf->SetTextColor(149, 165, 166);
+        $pdf->SetFont('Helvetica', '', 8);
+        $pdf->Cell(0, 10, utf8_decode("Cette facture a été générée automatiquement."), 0, 0, 'L');
+        $pdf->Cell(0, 10, utf8_decode("Merci de régler votre facture dans les délais impartis."), 0, 1, 'R');
+        // Message d'accompagnement
         $pdf->SetFont('Helvetica', '', 10);
         $pdf->Write(10, utf8_decode("Veuillez trouver ci-joint la facture correspondant à votre consommation d'eau domestique. Vous trouverez ci-dessous le détail de votre consommation ainsi que le montant total de votre facture. Veuillez effectuer le paiement avant la date d'échéance mentionnée ci-dessus. En cas de retard de paiement, des pénalités pourront être appliquées."));
         $pdfPath = '../Factures/facture' . $idFacture . $idClient . '.pdf';
@@ -111,7 +126,7 @@ if (isset($_POST['submit'])  && isset($_GET['idFacture'])) {
         $mail->setFrom('mohamedalhabib.fatehi@etu.uae.ac.ma', 'fatehi mohamed alhabib');
         $mail->addAddress($email);
         $mail->Subject = utf8_decode("Facture d'électricité");
-        $mail->Body =  utf8_decode("Bonjour, Voici votre facture n°" . $idFacture . "Merci de bien vouloir proceder au paiement avant la date d'echeance cité dans la facture");
+        $mail->Body =  utf8_decode("Bonjour, Voici votre facture n°" . $idFacture . "  Merci de bien vouloir proceder au paiement avant la date d'echeance mentionnée ci-dessus");
         $mail->addAttachment($pdfPath);
 
 
