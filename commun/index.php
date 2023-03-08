@@ -54,24 +54,26 @@
 
   </header>
 
-  <section class="container2">
-    <div class="divrelativ">
-      <div class="p7">
-        <p>Total control</p>
-      </div>
-      <div class="t3">
-        <h2>Ensure success, every time with our <br> platform</h2> <br>
-      </div>
-      <div class="p8">
-        <p>Chez L'YDEC, nous sommes fiers de fournir des services électriques de qualité supérieure à des
-          prix compétitifs. Que vous ayez besoin d'une simple réparation électrique ou d'une installation électrique
-          complète pour votre maison ou votre entreprise, nous sommes là pour vous aider. Nous offrons également des
-          services d'urgence 24h/24 et 7j/7 pour que vous puissiez avoir l'esprit tranquille..</p><br>
-      </div>
-      <a href="../clients/JoinAsAClient.php" target="_blank"> <input type="button" name="button" class="btn" value="Learn more">
-        </input> <br> </a>
-    </div>
-  </section>
+
+
   <footer>
+    <div class="content">
+      <div class="top">
+        <div class="logo-details">
+          <i class="fab fa-slack"></i>
+          <span class="logo_name">IDEC</span>
+        </div>
+
+
+      </div>
+      <div class="bottom-details">
+        <div class="bottom_text">
+          <div class="copyright_text">Copyright © 2021 MOHAMED FATEHI ALHABIB. All rights reserved</div>
+          <span class="policy_terms">
+            <li> Privacy policy </li>
+            <li>Terms & condition</li>
+
+        </div>
+      </div>
   </footer>
 </body>

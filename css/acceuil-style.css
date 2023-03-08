@@ -140,12 +140,12 @@ transform: scale(1.1);
 
 .container2 {
   background-image: url("../images/img8.png");
-  background-size: 400px;
+  background-size: 300px;
   width: 100%;
-  height: 1000px;
+  height: 500px;
   background-position: left;
   position: relative;
-  bottom: 200px;
+  bottom: 100px;
   left : 0px;
   background-repeat: no-repeat;
   opacity: 100%;
@@ -194,24 +194,7 @@ font-family : 'montserrat' ,sans-serif;
 transform: scale(1.02);
 color : #BF9341;
 border-color :#BF9341;
-}
 
-
-.container3 {
-  display: flex;
-  background-image: url("../images/img5.png");
-
-  background-size: 400px;
-  width: auto;
-  height: 100%;
-  background-position: top right -50px  ;
- 
-  position: relative;
-  top: 1000px;
-  right: 200px;
-  margin-left : -150px;
-
-  background-repeat: no-repeat;
 
 }
 
@@ -235,4 +218,83 @@ border-color :#BF9341;
 .p10  p {
   font-size: 15px;
   color: white;
+}
+
+
+/*footer*/
+
+
+footer {
+  background-color: #171E25;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 50px 100px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.footer-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-item h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.footer-item ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-item ul li {
+  margin-bottom: 10px;
+}
+
+.footer-item ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer-item ul li a:hover {
+  color: #BF9341;
+}
+
+.footer-item p {
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.footer-item form {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.footer-item form input[type="email"] {
+  background-color: #1C2938;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-size: 16px;
+  padding: 10px;
+  width: 250px;
+}
+
+.footer-item form input[type="submit"] {
+  background-color: #BF9341;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 10px;
+  padding: 10px 20px;
+  transition: transform .2s;
+}
+
+.footer-item form input[type="submit"]:hover {
+  transform: scale(1.1);
 }
