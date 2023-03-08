@@ -2,7 +2,7 @@
 session_start();
 require("../commun/connexion.php");
 if (!isset($_SESSION['connect'])) {
-    header('location: loginAsAnAdmin.php');
+    header('location: LoginAsAnAdmin.php');
     exit;
 }
 

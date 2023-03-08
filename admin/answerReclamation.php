@@ -1,12 +1,20 @@
 <?php
 session_start();
 require("../commun/connexion.php");
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../PHPMailer-master/src/Exception.php';
+require '../PHPMailer-master/src/PHPMailer.php';
+require '../PHPMailer-master/src/SMTP.php';
+
 if (!isset($_SESSION['connect'])) {
-    header('location: loginAsAnAdmin.php');
+    header('location: LoginAsAnAdmin.php');
     exit;
 } else {
     if (isset($_GET['idReclamation'])) {
-        $idReclamation = $_GET['idReclamation'];
+        $idReclamation = htmlspecialchars($_GET['idReclamation']);
         $_SESSION['idReclamation'] = $idReclamation;
     }
 
@@ -15,12 +23,46 @@ if (!isset($_SESSION['connect'])) {
     if (isset($_POST['submit'])) {
         if (isset($_POST['message'])) {
             if (!empty($_POST['message'])) {
+
                 $etat = "traitée";
                 $message         =  htmlspecialchars($_POST['message']);
-                $requete         = $db->prepare('UPDATE reclamation set reponse= ?, etat = ? WHERE idReclamation =?');
-                $requete->execute(array($message, $etat,  $_SESSION['idReclamation']));
-                header('location: answerReclamation.php?success=1');
-                exit();
+                $requete1         = $db->prepare('SELECT r.idClient, c.email ,c.fullName FROM reclamation r INNER JOIN clients c on r.idClient = c.idclient WHERE idReclamation =?');
+                $requete1->execute(array($_SESSION['idReclamation']));
+                $result = $requete1->fetch();
+                if ($result) {
+                    $idClient = $result['idClient'];
+                    $email    = $result['email'];
+                    $fullName = $result['fullName'];
+                }
+                $mail = new PHPMailer(true);
+
+                // Configurer les paramètres du serveur SMTP
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com';
+                $mail->SMTPAuth = true;
+                $mail->Username = 'mohamedalhabib.fatehi@etu.uae.ac.ma';
+                $mail->Password = 'med@widadi01';
+                $mail->SMTPSecure = 'tls';
+                $mail->Port = 587;
+
+                // Configurer les paramètres de l'email
+                $mail->setFrom('mohamedalhabib.fatehi@etu.uae.ac.ma', 'fatehi mohamed alhabib');
+                $mail->addAddress($email);
+                $mail->Subject = utf8_decode("Reponse à la reclamation");
+                $mail->Body =  utf8_decode("Bonjour " . $fullName . "\n" . $message);
+
+
+
+                // Envoyer l'email
+                if (!$mail->send()) {
+                    echo 'Erreur: ' . $mail->ErrorInfo;
+                } else {
+
+                    $requete2         = $db->prepare('UPDATE reclamation set reponse= ?, etat = ? WHERE idReclamation =?');
+                    $requete2->execute(array($message, $etat,  $_SESSION['idReclamation']));
+                    header('location: answerReclamation.php?success=1');
+                    exit();
+                }
             }
         }
     }

@@ -51,8 +51,8 @@ if (!isset($_SESSION['connect'])) {
       <i class='bx bx-search'></i>
     </div>
     <div class="profile-details">
-      <a href="ClientSettings.php"> <span class="admin_name">Mohamed Fatehi</span> </a>
-
+      <span class="admin_name">Mohamed Fate</span>
+      <img src="../images/img4.png" alt="Simo" style="width:40%; height:100%; position : relative; left : 15px;">
     </div>
   </nav>
 
@@ -65,7 +65,7 @@ if (!isset($_SESSION['connect'])) {
         </div>
 
         <div>
-          <input type="submit" name="submit" value="Search">
+          <input style=" overflow: hidden;" type="submit" name="submit" value="Search">
         </div>
 
       </form>
@@ -89,7 +89,7 @@ if (!isset($_SESSION['connect'])) {
             <ul class="details">
               <li class="topic">Date Factures </li>
               <?php
-              $requete = $db->prepare('SELECT dateFacture FROM facture where idClient =?');
+              $requete = $db->prepare('SELECT dateFacture FROM facture where idClient =? order by dateFacture ');
               $requete->execute(array($idClient));
               while ($result = $requete->fetch()) {
                 $dateFacture   =   $result['dateFacture'];
@@ -103,7 +103,7 @@ if (!isset($_SESSION['connect'])) {
             <ul class="details">
               <li class="topic">Consomations</li>
               <?php
-              $requete = $db->prepare('SELECT consommation FROM facture where idClient =?');
+              $requete = $db->prepare('SELECT consommation FROM facture where idClient =? order by dateFacture');
               $requete->execute(array($idClient));
               while ($result = $requete->fetch()) {
                 $consommation  = $result['consommation'];
@@ -117,7 +117,7 @@ if (!isset($_SESSION['connect'])) {
             <ul class="details">
               <li class="topic">Etat</li>
               <?php
-              $requete = $db->prepare('SELECT Etat FROM facture WHERE idClient = ? ');
+              $requete = $db->prepare('SELECT Etat FROM facture WHERE idClient = ? order by dateFacture ');
               $requete->execute(array($idClient));
               while ($result = $requete->fetch()) {
                 $etatFacture = $result['Etat'];
@@ -131,11 +131,11 @@ if (!isset($_SESSION['connect'])) {
             <ul class="details">
               <li class="topic">Justificatifs</li>
             <?php
-            $requete = $db->prepare('SELECT adresseImg FROM facture WHERE idClient = ? ');
+            $requete = $db->prepare('SELECT adresseImg FROM facture WHERE idClient = ? order by dateFacture');
             $requete->execute(array($idClient));
             while ($result = $requete->fetch()) {
               $adresseImg   = $result['adresseImg'];
-              echo  '<li> <a href="' . $adresseImg . '"> Voir justificatif </a> </li>';
+              echo  '<li> <a style="font-size : 15px;"href="' . $adresseImg . '"> Voir justificatif </a> </li>';
             }
           } else if (isset($verification) && $verification == 0) {
             echo "<script> 

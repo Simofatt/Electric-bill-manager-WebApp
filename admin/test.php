@@ -41,7 +41,7 @@ if (isset($_POST['submit'])  && isset($_GET['idFacture'])) {
         //$imagePath = "Logo.png";
         //$imagePath2 = $address;
         // Creating a document object
-        $pdf = new Fpdf();
+
         $pdf = new Fpdf();
 
         $pdf->SetAutoPageBreak(false);

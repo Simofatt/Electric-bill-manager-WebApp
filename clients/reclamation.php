@@ -2,7 +2,7 @@
 session_start();
 require("../commun/connexion.php");
 if (!isset($_SESSION['connect'])) {
-  header('location: loginAsAClient.php');
+  header('location: LoginAsAClient.php');
   exit;
 } else {
   $idClient  = $_SESSION['idClient'];
@@ -29,6 +29,7 @@ if (isset($_POST['submit'])) {
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Message</title>
   <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
@@ -60,11 +61,20 @@ if (isset($_POST['submit'])) {
       <textarea id="message" name="message" rows="10" cols="30" required></textarea><br>
     </div>
     <?php
-    if (isset($_GET['success'])) { ?>
-      <div>
-        <p>La reclamation a bien eté envoyée!</p><br>
-      </div>
-    <?php
+    if (isset($_GET['success']) && $_GET['success'] == 1) {
+      echo "<script> 
+    Swal.fire({
+      icon: 'success',
+      title: 'Success...',
+      text: 'La reclamation a bien été envoyer!',
+      confirmButtonText: 'OK',
+      allowOutsideClick: false // disable clicking outside of the alert to close it
+    }).then((result) => {
+      if (result.isConfirmed) {
+        location.replace('reclamation.php') ; 
+      }
+    });
+  </script>";
     }
     ?>
     <div class="sub">

@@ -74,7 +74,7 @@ if (!isset($_SESSION['connect'])) {
                 $dateFacture   = $result2['dateFacture'];
 
             ?>
-                <li> <?php echo $dateFacture; ?> </li>
+                <li class="data"> <?php echo $dateFacture; ?> </li>
             <?php }
             } ?>
           </ul>
@@ -93,7 +93,7 @@ if (!isset($_SESSION['connect'])) {
               if ($result2) {
                 $consommation = $result2['consommation'];
             ?>
-                <li> <?php echo $consommation; ?> </li>
+                <li class="data"> <?php echo $consommation; ?> </li>
             <?php }
             } ?>
           </ul>
@@ -112,13 +112,13 @@ if (!isset($_SESSION['connect'])) {
               if ($result2) {
                 $justificatif = $result2['adresseImg'];
             ?>
-                <?php echo  '<li> <a href="' . $justificatif . '"> Voir justificatif </a> </li>'; ?>
+                <?php echo  '<li style="font-size : 15px; class="data"> <a href="' . $justificatif . '"> Voir justificatif </a> </li>'; ?>
             <?php }
             } ?>
           </ul>
 
           <ul class="details">
-            <li class="topic" style="margin-left: 60px;">Action</li>
+            <li class="topic" style="margin-left: 60px; height:55px;">Action</li>
             <?php
             $statut = 'nonValidée';
             $requete = $db->prepare('SELECT idFacture FROM facture where statut  = ?');
@@ -134,8 +134,8 @@ if (!isset($_SESSION['connect'])) {
                 <li>
                   <div style="display: flex; justify-content: center;">
                     <form action="test.php?idFacture=<?php echo $idFacture; ?>" method="post" style="display: flex;">
-                      <input type="submit" name="submit" value="Valider" style="margin-right: 10px;">
-                      <input type="submit" name="submit" value="Rectifier">
+                      <input style=" overflow: hidden; margin-right: 15px;" type="submit" name="submit" value="Valider">
+                      <input style=" overflow: hidden;" type="submit" name="submit" value="Rectifier">
                     </form>
                   </div>
 
@@ -150,7 +150,7 @@ if (!isset($_SESSION['connect'])) {
             if (isset($_GET['idFacture']) && isset($_GET['rectification'])) {
               $idFacture = $_GET['idFacture'];
               ?>
-              <script>
+              <script style="overflow: hidden;">
                 Swal.fire({
                   title: 'Rectifier la consommation',
                   input: 'text',

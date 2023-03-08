@@ -4,6 +4,8 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+ 
 }
 
 .sidebar{
@@ -222,6 +224,20 @@ nav .profile-details i{
 .sales-boxes .sales-details li.topic{
   font-size: 20px;
   font-weight: 500;
+  height :70px;
+}
+.sales-boxes .sales-details li.data{
+  font-size: 16px ;
+position : relative ;
+bottom : 5px;
+margin:  10px;
+}
+
+.details .action {
+  width: 25%;
+  position: relative;
+  top: -10px;
+  padding: 5px;
 }
 .sales-boxes .sales-details li{
   list-style: none;

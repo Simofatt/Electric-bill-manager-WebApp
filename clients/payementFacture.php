@@ -28,6 +28,7 @@ if (!isset($_SESSION['connect'])) {
     <meta charset="UTF-8">
     <title>Client dashboard </title>
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="..\css\facturesVerification.css?v=<?php echo time(); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
@@ -39,7 +40,7 @@ if (!isset($_SESSION['connect'])) {
 <div class="home-content">
     <div class="sales-boxes">
         <div class="recent-sales box">
-            <div class="title">Factures de <?php echo $fullName; ?></div> <br>
+            <div class="title">Factures de <?php echo $fullName; ?></div> <br><br> <br>
             <div class="sales-details">
 
                 <ul class="details">
@@ -50,7 +51,7 @@ if (!isset($_SESSION['connect'])) {
                     while ($result = $requete->fetch()) {
                         $dateFacture   =   $result['dateFacture'];
                     ?>
-                        <li> <?php echo  $dateFacture; ?> </li>
+                        <li class="data"> <?php echo  $dateFacture; ?> </li>
                     <?php
                     }
 
@@ -65,7 +66,7 @@ if (!isset($_SESSION['connect'])) {
                     while ($result = $requete->fetch()) {
                         $consommation  = $result['consommation'];
                     ?>
-                        <li><?php echo $consommation; ?></li>
+                        <li class="data"><?php echo $consommation; ?></li>
                     <?php
                     }
                     ?>
@@ -80,7 +81,7 @@ if (!isset($_SESSION['connect'])) {
                     while ($result = $requete->fetch()) {
                         $prixHT = $result['prixHT'];
                     ?>
-                        <li><?php echo $prixHT; ?></li>
+                        <li class="data"> <?php echo $prixHT; ?></li>
                     <?php
                     }
                     ?>
@@ -96,7 +97,7 @@ if (!isset($_SESSION['connect'])) {
                     while ($result = $requete->fetch()) {
                         $prixTTC = $result['prixTTC'];
                     ?>
-                        <li><?php echo $prixTTC; ?></li>
+                        <li class="data"><?php echo $prixTTC; ?></li>
                     <?php
                     }
                     ?>
@@ -104,7 +105,7 @@ if (!isset($_SESSION['connect'])) {
 
 
                 <ul class="details">
-                    <li class="topic">Action</li>
+                    <li style="height:55px;" class="topic">Action</li>
                     <?php
                     $requete = $db->prepare('SELECT idFacture FROM facture WHERE idClient = ?  AND statut = "Validée" and Etat = "nonPayée"');
                     $requete->execute(array($idClient));
@@ -118,7 +119,22 @@ if (!isset($_SESSION['connect'])) {
                     }
                     ?>
 
+                    <?php
 
+                    if (isset($_GET['success']) && $_GET['success'] == 1) {
+                        echo "<script> 
+                            Swal.fire({
+                            icon: 'success',
+                            title: 'Success...',
+                            text: 'La facture a bien été payer!',
+                            confirmButtonText: 'OK',
+                            allowOutsideClick: false // disable clicking outside of the alert to close it
+                            }).then((result) => {
+                          
+                            });
+                        </script>";
+                    }
+                    ?>
                 </ul>
             </div>
 

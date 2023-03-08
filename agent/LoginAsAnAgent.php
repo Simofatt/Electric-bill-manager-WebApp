@@ -57,7 +57,7 @@ if (isset($_SESSION['connect'])) {
 
 <body>
     <nav>
-        <a href="acceuil.html">
+        <a href="../commun/index.php">
             <h2 class="logo">L'Y<span>DEC</span></h2>
         </a>
     </nav>
