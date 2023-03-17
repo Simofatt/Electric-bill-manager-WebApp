@@ -87,9 +87,10 @@ if (isset($_POST['submit'])) {
                 <input type="password" name="password" class="txt-css" required>
                 <label>Password</label>
             </div>
-            <div>
-                <label><input id="checkbox" type="checkbox" name="connect">Auto login </label>
-            </div>
+            <label>
+                <input id="checkbox" type="checkbox" name="connect">
+                <span class="checkbox-label">Auto login</span>
+            </label>
 
             <div>
                 <input class="login-btn" type="submit" value="Log in" name="submit">

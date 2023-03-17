@@ -64,12 +64,12 @@ font-family: 'Kanit', sans-serif;
 
 .txt-field .txt-css {
   width: 100%;
-  height: 50px;
-  border-color: white;
-  border-width: 2px;
+  height: 45px;
+  border-color: silver;
+  border-width: .1px;
   outline: none;
   background-color: #171E25;
-  transition: .5s;
+  transition: .1s;
   color : white;
   padding: 10px 0 0 5px;
 
@@ -78,9 +78,9 @@ font-family: 'Kanit', sans-serif;
 }
 
 input[value="Log in"] {
-  font-size: 20px;
+  font-size: 15px;
   font-family: 'poppins';
-  font-weight: bold;
+
 }
 
 
@@ -91,7 +91,7 @@ input[value="Log in"] {
   color: white;
   transform: translateY(-50%);
   pointer-events: none;
-  transition: top .4s;
+  transition: top .3s;
   opacity: 0.7;
 
 }
@@ -102,7 +102,7 @@ input[value="Log in"] {
   color: #BF9341;
   font-weight: lighter;
   opacity : 100%;
-  font-size:17px;
+  font-size:15px;
 
 }
 
@@ -112,22 +112,26 @@ opacity: 100%;
 }
 
 .login-btn {
-  width: 100%;
+  width: 70%;
   height: 50px;
   background-color: #171E25;
-  margin: 10px 0 0 0px;
-  border-radius: 200px;
-  border-color: white;
-  transition: .2s linear;
+  margin:  15px 0 10px 10px;
+  position: relative;
+   left : 40px;
+  border-radius: 20px;
+  border-color: silver;
+  transition: .1s ease ;
   cursor: pointer;
-  color: white;
+  color: silver;
   border-width: 0.1px;
   outline: none;
 }
 
+
+
 .login-btn:hover {
 
-  transform: scale(1.1);
+  transform: scale(1.01);
   border: 2px solid #BF9341;
   color : #BF9341;
 
@@ -156,5 +160,42 @@ opacity: 100%;
 color : red;
 }
 
+#checkbox {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  background-color: #171E25;
+  border: 2px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+ 
+
+}
+
+#checkbox::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
 
 
+
+#checkbox:hover {
+  cursor: pointer;
+}
+
+.checkbox-label {
+  color: white;
+  position : relative ; 
+  bottom : 5px;
+}

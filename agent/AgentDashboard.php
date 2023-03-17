@@ -113,6 +113,7 @@ if (empty($_SESSION['connect'])) {
     <meta charset="UTF-8">
     <title>Generer PDF </title>
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="..\css\facturesVerification.css?v=<?php echo time(); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
@@ -130,7 +131,23 @@ if (empty($_SESSION['connect'])) {
             <div class="txt-field">
                 <input class="txt-css" type="file" id="firstName" name="image" placeholder="file">
             </div>
-
+            <?php
+            if (isset($_GET['success']) && $_GET['success'] == 1) {
+                echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success...',
+                    text: 'La consommation annuelle a bien été saisie!',
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false // disable clicking outside of the alert to close it
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.replace('seeReclamations.php');
+                    }
+                });
+            </script>";
+            }
+            ?>
             <div>
                 <input id="input" type="submit" name="submit" value="Send">
             </div>

@@ -105,7 +105,7 @@ if (!isset($_SESSION['connect'])) {
 
 
                 <ul class="details">
-                    <li style="height:55px;" class="topic">Action</li>
+                    <li class="topic">Action</li>
                     <?php
                     $requete = $db->prepare('SELECT idFacture FROM facture WHERE idClient = ?  AND statut = "Validée" and Etat = "nonPayée"');
                     $requete->execute(array($idClient));
@@ -114,7 +114,7 @@ if (!isset($_SESSION['connect'])) {
                         echo '<form action="payementFacture.php?idFacture=' . $idFacture . '" method="post">';
 
 
-                        echo ' <li> <input type="submit" name="submit" value="Payer"> </li>';
+                        echo ' <li> <input class="payer" style =" height: 10px; " type="submit" name="submit" value="Payer"> </li>';
                         echo ' </form>';
                     }
                     ?>

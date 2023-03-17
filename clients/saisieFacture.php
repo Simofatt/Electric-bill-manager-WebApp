@@ -202,6 +202,7 @@ if (isset($_POST['submit'])) {
             if (!$mail->send()) {
               echo 'Erreur: ' . $mail->ErrorInfo;
             } else {
+
               header('location: saisieFacture.php?success=1');
               exit();
             }
@@ -209,7 +210,7 @@ if (isset($_POST['submit'])) {
         } else if ($consommation >= 400) {
           $requete8 = $db->prepare('UPDATE facture SET statut ="nonValidée" WHERE idFacture = ?');
           $requete8->execute(array($idFacture));
-          header('location: saisieFacture.php?success=0');
+          header('location: saisieFacture.php?wait=1');
           exit();
         }
       }
@@ -273,21 +274,8 @@ if (isset($_POST['submit'])) {
         }
       });
     </script>";
-    } else if (isset($_GET['success']) && $_GET['success'] == 0) {
-      echo "<script> 
-      Swal.fire({
-        icon: 'success',
-        title: 'Success...',
-        text: 'La facture a bien été saisie, elle vous sera envoyer par mail lorsqu'elle sera valider!',
-        confirmButtonText: 'OK',
-        allowOutsideClick: false // disable clicking outside of the alert to close it
-      }).then((result) => {
-        if (result.isConfirmed) {
-          location.replace('saisieFacture.php') ; 
-        }
-      });
-    </script>";
     }
+
     if (isset($error) && $error == 1) { ?>
       <div>
         <p>La taille de l'image ne doit pas dépasser 3MO !</p> <br>
@@ -305,6 +293,23 @@ if (isset($_POST['submit'])) {
       <input type="submit" name="submit" value="Send">
     </div>
   </form>
+  <?php
+  if (isset($_GET['wait']) && $_GET['wait'] == 1) {
+    echo "<script> 
+    Swal.fire({
+      icon: 'success',
+      title: 'Success...',
+      text: 'La facture a bien été saisie, en attente de la confirmation !',
+      confirmButtonText: 'OK',
+      allowOutsideClick: false // disable clicking outside of the alert to close it
+    }).then((result) => {
+      if (result.isConfirmed) {
+        location.replace('saisieFacture.php') ; 
+      }
+    });
+  </script>";
+  }
+  ?>
 </div>
 </div>
 </section>

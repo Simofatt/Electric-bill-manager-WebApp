@@ -39,7 +39,7 @@ if (!isset($_SESSION['connect'])) {
           <li class="topic">Date Factures </li>
           <?php
           $annee = date('Y');
-          $requete = $db->prepare('SELECT dateFacture FROM facture where idClient =? AND Année =?');
+          $requete = $db->prepare('SELECT dateFacture FROM facture where idClient =? AND Année =? order by dateFacture');
           $requete->execute(array($idClient, $annee));
           while ($result = $requete->fetch()) {
             $dateFacture   =   $result['dateFacture'];
@@ -55,7 +55,7 @@ if (!isset($_SESSION['connect'])) {
           <li class="topic">Consomations</li>
           <?php
 
-          $requete = $db->prepare('SELECT consommation FROM facture where idClient =?  AND Année =?');
+          $requete = $db->prepare('SELECT consommation FROM facture where idClient =?  AND Année =? order by dateFacture');
           $requete->execute(array($idClient, $annee));
           while ($result = $requete->fetch()) {
             $consommation  = $result['consommation'];
@@ -71,7 +71,7 @@ if (!isset($_SESSION['connect'])) {
           <li class="topic">Etat</li>
           <?php
 
-          $requete = $db->prepare('SELECT Etat FROM facture where idClient =? AND Année =?');
+          $requete = $db->prepare('SELECT Etat FROM facture where idClient =? AND Année =? order by dateFacture');
           $requete->execute(array($idClient, $annee));
           while ($result = $requete->fetch()) {
             $etat  = $result['Etat'];
@@ -87,11 +87,11 @@ if (!isset($_SESSION['connect'])) {
           <li class="topic">Justificatifs</li>
           <?php
 
-          $requete = $db->prepare('SELECT adresseImg FROM facture WHERE idClient = ?  AND Année =?');
+          $requete = $db->prepare('SELECT adresseImg FROM facture WHERE idClient = ?  AND Année =? order by dateFacture');
           $requete->execute(array($idClient, $annee));
           while ($result = $requete->fetch()) {
             $adresseImg   = $result['adresseImg'];
-            echo  '<li> <a href="' . $adresseImg . '"> Voir justificatif </a> </li>';
+            echo  '<li> <a style="font-size : 15px;" href="' . $adresseImg . '"> Voir justificatif </a> </li>';
           }
           ?>
 
