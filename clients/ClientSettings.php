@@ -152,7 +152,7 @@ if (!isset($_SESSION['connect'])) {
     <?php
     if (isset($_GET['error'])) { ?>
       <div>
-        <p>Email Existe deja!</p>
+        <p>Email Existe déja!</p>
       </div>
     <?php
     }
